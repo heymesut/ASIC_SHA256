@@ -84,11 +84,14 @@ module hash_core(
                 );
         
         wire [2:0] cmd;  //2:output_enable  1:inner_busy    0:first round
-        reg [31:0] A,B,C,D,E,F,G,H;
-        reg [31:0] H0,H1,H2,H3,H4,H5,H6,H7;
-        reg [6:0] round,round_plus_1;
+        reg  [31:0] A,B,C,D,E,F,G,H;
+        reg  [31:0] H0,H1,H2,H3,H4,H5,H6,H7;
+        reg  [6:0] round;
+        wire [6:0] round_plus_1;
 
         reg [2:0] read_counter;
+
+        reg [31:0] Kt;
 
         wire [31:0] f1_EFG_32,f2_ABC_32,f3_A_32,f4_E_32,f5_W1_32,f6_W14_32,T1_32,T2_32;
         wire [31:0] next_E,next_A;
