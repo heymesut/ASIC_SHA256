@@ -39,7 +39,7 @@ assign output_enable    =    (state==s2)? 1 : 0;
 assign inner_busy       =    (state==s1)? 1 : 0;
 
 
-always @(posedge clk or posedge reset)
+always @(posedge clk)
 begin
     if(reset==1'b1)
         state<=s0;
@@ -70,7 +70,7 @@ begin
     endcase
 end
 
-always @ (posedge clk or posedge reset)
+always @ (posedge clk)
 begin
     if(reset==1'b1)
         counter1<=7'd0;
@@ -84,7 +84,7 @@ begin
                 counter1<=7'd0;
 end
 
-always @ (posedge clk or posedge reset)
+always @ (posedge clk)
 begin
     if(reset==1'b1)
         counter2<=3'd0;
@@ -92,7 +92,7 @@ begin
         if(state==s2)
             counter2<=counter2+1;
         else
-            counter2<=0; 
+            counter2<=3'd0; 
 end
 
 

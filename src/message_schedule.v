@@ -35,7 +35,7 @@ assign logic_result = R15 + sigma0 + R6 + sigma1;
 
 
 //register array
-always @ (posedge clk or posedge reset)
+always @ (posedge clk)
 begin
     if(reset==1'b1 || counter==7'd64)
         begin
@@ -101,7 +101,7 @@ begin
             end    
 end
 
-always @ (posedge clk or posedge reset)
+always @ (posedge clk)
 begin
     if(reset==1'b1 || counter==7'd64)
         counter<=7'd0;
