@@ -1,40 +1,37 @@
-////////////////////////////////////
-//description:register array and sigma calculation of message schedule module
+//////////////////////////////////////
+//description:message schedule module
 //
 //parameter:description
 //clk
 //reset:high enable
 //data:input message(32 bits input per cycle)
-//logic_result:Wj after logic calculation
 //write_enable:when input data is valid,set 1
-//inner_busy:set 1 to enable message_schedule module
-//Wt:message schedule module output(the first register(R0) of register array)
-//R6,R15:register output for logic calculation
-//sigma0: the result after sigma0
-//sigma1: the result after sigma1
+//inner_busy:set 1 to enable message schedule module
+//Wt:message schedule module output(the first register(R0) of register array)(to hash core module)
 //////////////////////////////////////
 
 
-module schedule_core(
+module message_shcdule(
     input  wire            clk,
     input  wire            reset,
     input  wire [31:0]     data,
-    input  wire [31:0]     logic_result,
     input  wire            write_enable,
     input  wire            inner_busy,
-    output reg  [31:0]     Wt,//R0
-    output reg  [31:0]     R6,
-    output reg  [31:0]     R15,
-    output wire [31:0]     sigma0,
-    output wire [31:0]     sigma1 
+    output reg  [31:0]     Wt
 );
 
-reg   [31:0]        R1,R2,R3,R4,R5,R7,R8,R9,R10,R11,R12,R13,R14//register array
-reg   [6 :0]        counter;
+wire [31:0]     logic_result;
+wire [31:0]     sigma0;
+wire [31:0]     sigma1;   
+reg  [31:0]     R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14,R15//register array
+reg  [6 :0]     counter;
 
 //sigma calculation
 assign sigma0 = {R14[6:0],R14[31:7]} ^ {R14[17:0],R14[31:18]} ^ {3'b000,R14[31:3]};
 assign sigma1 = {R1[16:0],R1[31:17]} ^ {R1[18:0],R1[31:19]} ^ {10'b00_0000_0000,R1[31:10]};
+
+//logic result calculation
+assign logic_result = R15 + sigma0 + R6 + sigma1; 
 
 
 //register array
