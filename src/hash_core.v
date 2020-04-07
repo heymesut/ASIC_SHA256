@@ -366,6 +366,8 @@ module hash_core(
                 end
                 else
                 begin
+                if(cmd[1]==1'b1)
+                begin
                         case (round)
                                 'd00:   Kt <= `K00;
                                 'd01:   Kt <= `K01;
@@ -433,6 +435,11 @@ module hash_core(
                                 'd63:   Kt <= `K63;
                                 default:Kt <= 'd0;
                         endcase
+                end
+                else
+                begin
+                        Kt <= 'd0;
+                end
                 end
         end
 
