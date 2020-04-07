@@ -17,17 +17,22 @@ module top;
 
     initial begin
         // Inputs
+        //two blocks
         clk=0;
         reset=1;
         data=0;
         last_block=0;
-        first_block=0;
-        write_enable=1;
+        first_block=1;
+        write_enable=0;
         #8  reset=0;
-            first_block=1;
-        #8  first_block=0;
-        #112 last_block=1;
-        #8  last_block=0;
+        #8  write_enable=1; //the data input begins
+        #8  first_block=0;  //first cycle of first block, the first cycle ends
+        #120 write_enable=0; 
+        #8                  //prepare for the next block
+        #384 last_block=1;  
+            write_enable=1; //after 63 cycles, the second block begins
+        #8  last_block=0;   
+        #120 write_enable=0; 
     end
 
     always #4 clk=~clk;
