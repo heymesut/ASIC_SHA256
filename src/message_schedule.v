@@ -11,7 +11,7 @@
 //////////////////////////////////////
 
 
-module message_shcdule(
+module message_schedule(
     input  wire            clk,
     input  wire            reset,
     input  wire [31:0]     data,

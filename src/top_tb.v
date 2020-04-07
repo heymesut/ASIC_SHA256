@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module top;
+module top_tb;
 
     // Inputs
     reg clk;
@@ -18,13 +18,14 @@ module top;
     initial begin
         // Inputs
         //two blocks
-        clk=1'b0;
+        clk=1'b1;
         reset=1'b1;
         data=32'b0;
         last_block=1'b0;
-        first_block=1'b1;
+        first_block=1'b0;
         write_enable=1'b0;
         #8  reset=1'b0;
+            first_block=1'b1;
         #8  write_enable=1'b1; //the data input begins
         #8  first_block=1'b0;  //first cycle of first block, the first cycle ends
         #120 write_enable=1'b0; 
@@ -36,7 +37,7 @@ module top;
 
     always #4 clk=~clk;
 
-    top top(
+    top our_top(
         .clk(clk),
         .reset(reset),
         .data(data),
