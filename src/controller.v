@@ -56,7 +56,7 @@ begin
         else
             next_state=s0;
       s1:
-        if(counter1==7'd64)
+        if(counter1==7'd65)
             next_state=s2;
         else
             next_state=s1;
@@ -75,7 +75,7 @@ begin
     if(reset==1'b1)
         counter1<=7'd0;
     else
-        if(counter1==7'd64)
+        if(counter1==7'd65)
             counter1<=7'd0;
         else
             if(counter1!=7'd0 || last_block==1'b1)
