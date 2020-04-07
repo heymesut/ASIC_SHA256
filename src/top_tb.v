@@ -47,3 +47,5 @@ module top;
         .digest(digest),
         .output_enable(output_enable)
     );
+    
+endmodule

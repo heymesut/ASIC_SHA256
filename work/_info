@@ -1,0 +1,94 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dE:/modelsim
+vcontroller
+Z0 !s110 1586241812
+!i10b 1
+!s100 d2?ehIKjg?mm[5FV91QbU0
+IfChPbHUiQ];V7`_9oWFIe0
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+Z2 dF:/myfile/ASIC_SHA256
+w1585797997
+8F:/myfile/ASIC_SHA256/src/controller.v
+FF:/myfile/ASIC_SHA256/src/controller.v
+L0 16
+Z3 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z4 !s108 1586241812.000000
+!s107 F:/myfile/ASIC_SHA256/src/controller.v|
+!s90 -reportprogress|300|-work|work|-stats=none|F:/myfile/ASIC_SHA256/src/controller.v|
+!i113 1
+Z5 o-work work
+Z6 tCvgOpt 0
+vhash_core
+R0
+!i10b 1
+!s100 XZn16_VB`:1R3@9L8ddQ10
+ILQ]:PNOo4c:o@aa=Y99`M3
+R1
+R2
+w1585801343
+8F:/myfile/ASIC_SHA256/src/hash_core.v
+FF:/myfile/ASIC_SHA256/src/hash_core.v
+L0 76
+R3
+r1
+!s85 0
+31
+R4
+!s107 F:/myfile/ASIC_SHA256/src/hash_core.v|
+!s90 -reportprogress|300|-work|work|-stats=none|F:/myfile/ASIC_SHA256/src/hash_core.v|
+!i113 1
+R5
+R6
+vmessage_shcdule
+R0
+!i10b 1
+!s100 ]PJI0FmZ5RDYlg7RZzI4S0
+I^FML4=h6HGUJEOW<Zz3AL0
+R1
+R2
+w1585801241
+8F:/myfile/ASIC_SHA256/src/message_schedule.v
+FF:/myfile/ASIC_SHA256/src/message_schedule.v
+L0 14
+R3
+r1
+!s85 0
+31
+R4
+!s107 F:/myfile/ASIC_SHA256/src/message_schedule.v|
+!s90 -reportprogress|300|-work|work|-stats=none|F:/myfile/ASIC_SHA256/src/message_schedule.v|
+!i113 1
+R5
+R6
+vtop
+R0
+!i10b 1
+!s100 9?g9PFhezWPEX_@P]S29@2
+I;M<4;3[?Fk:aC[0iaCaVa2
+R1
+R2
+w1585474608
+8F:/myfile/ASIC_SHA256/src/top.v
+FF:/myfile/ASIC_SHA256/src/top.v
+L0 18
+R3
+r1
+!s85 0
+31
+R4
+!s107 F:/myfile/ASIC_SHA256/src/top.v|
+!s90 -reportprogress|300|-work|work|-stats=none|F:/myfile/ASIC_SHA256/src/top.v|
+!i113 1
+R5
+R6
