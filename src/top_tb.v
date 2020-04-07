@@ -28,8 +28,7 @@ module top;
         #8  write_enable=1; //the data input begins
         #8  first_block=0;  //first cycle of first block, the first cycle ends
         #120 write_enable=0; 
-        #8                  //prepare for the next block
-        #384 last_block=1;  
+        #392 last_block=1;  //after 49 cycles,next block
             write_enable=1; //after 63 cycles, the second block begins
         #8  last_block=0;   
         #120 write_enable=0; 
