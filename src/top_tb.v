@@ -22,27 +22,27 @@ module top_tb;
     initial begin
         // Inputs
         //two blocks
-        clk=1'b1;
-        reset=1'b1;
-        data=32'b0;
-        last_block=1'b0;
-        first_block=1'b0;
-        write_enable=1'b0;
-        #8  reset=1'b0;
-            first_block=1'b1;
-        #8  write_enable=1'b1;
-            data=32'h3030_3030;
+        clk<=1'b1;
+        reset<=1'b1;
+        data<=32'b0;
+        last_block<=1'b0;
+        first_block<=1'b0;
+        write_enable<=1'b0;
+        #8  reset<=1'b0;
+            first_block<=1'b1;
+        #8  write_enable<=1'b1;
+            data<=32'h3030_3030;
          //the data input begins
-        #8  first_block=1'b0; 
-        #104 data=32'h8000_0000; // the 15th cycle
-        #8 data=32'b0;
-        #8 write_enable=1'b0; 
-        #392 last_block=1'b1;  
-            write_enable=1'b1; //after 49 cycles,next block
-        #8  last_block=1'b0;   
-        #112 data=32'h0000_01c0;// the last 32bits data
-        #8 write_enable=1'b0; 
-            data=32'b0;
+        #8  first_block<=1'b0; 
+        #104 data<=32'h8000_0000; // the 15th cycle
+        #8 data<=32'b0;
+        #8 write_enable<=1'b0; 
+        #392 last_block<=1'b1;  
+            write_enable<=1'b1; //after 49 cycles,next block
+        #8  last_block<=1'b0;   
+        #112 data<=32'h0000_01c0;// the last 32bits data
+        #8 write_enable<=1'b0; 
+            data<=32'b0;
     end
 
     always #4 clk=~clk;

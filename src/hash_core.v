@@ -127,23 +127,23 @@ module hash_core(
                 begin
                         round <= 'd0;
                         
-                        A <= `SHA256_H0;
-                        B <= `SHA256_H1;
-                        C <= `SHA256_H2;
-                        D <= `SHA256_H3;
-                        E <= `SHA256_H4;
-                        F <= `SHA256_H5;
-                        G <= `SHA256_H6;
-                        H <= `SHA256_H7;
+                        A <= 32'b0;
+                        B <= 32'b0;
+                        C <= 32'b0;
+                        D <= 32'b0;
+                        E <= 32'b0;
+                        F <= 32'b0;
+                        G <= 32'b0;
+                        H <= 32'b0;
 
-                        H0 <= `SHA256_H0;
-                        H1 <= `SHA256_H0;
-                        H2 <= `SHA256_H0;
-                        H3 <= `SHA256_H0;
-                        H4 <= `SHA256_H0;
-                        H5 <= `SHA256_H0;
-                        H6 <= `SHA256_H0;
-                        H7 <= `SHA256_H0;
+                        H0 <= 32'b0;
+                        H1 <= 32'b0;
+                        H2 <= 32'b0;
+                        H3 <= 32'b0;
+                        H4 <= 32'b0;
+                        H5 <= 32'b0;
+                        H6 <= 32'b0;
+                        H7 <= 32'b0;
                 end
                 else
                         if(cmd[2] == 1'b1)
