@@ -3,40 +3,40 @@
 module top;
 
     // Inputs
-    wire clk;
-    wire reset;
-    wire [31:0] data;
-    wire write_enable;
-    wire last_block;
-    wire first_block;
+    reg clk;
+    reg reset;
+    reg [31:0] data;
+    reg write_enable;
+    reg  last_block;
+    reg first_block;
 
     // Outputs
     wire busy;
-    wire digest;
+    wire [31:0]  digest;
     wire output_enable;
 
     initial begin
         // Inputs
         //two blocks
-        clk=0;
-        reset=1;
-        data=0;
-        last_block=0;
-        first_block=1;
-        write_enable=0;
-        #8  reset=0;
-        #8  write_enable=1; //the data input begins
-        #8  first_block=0;  //first cycle of first block, the first cycle ends
-        #120 write_enable=0; 
-        #392 last_block=1;  //after 49 cycles,next block
-            write_enable=1; //after 63 cycles, the second block begins
-        #8  last_block=0;   
-        #120 write_enable=0; 
+        clk=1'b0;
+        reset=1'b1;
+        data=32'b0;
+        last_block=1'b0;
+        first_block=1'b1;
+        write_enable=1'b0;
+        #8  reset=1'b0;
+        #8  write_enable=1'b1; //the data input begins
+        #8  first_block=1'b0;  //first cycle of first block, the first cycle ends
+        #120 write_enable=1'b0; 
+        #392 last_block=1'b1;  //after 49 cycles,next block
+            write_enable=1'b1; //after 63 cycles, the second block begins
+        #8  last_block=1'b0;   
+        #120 write_enable=1'b0; 
     end
 
     always #4 clk=~clk;
 
-    top topt(
+    top top(
         .clk(clk),
         .reset(reset),
         .data(data),
