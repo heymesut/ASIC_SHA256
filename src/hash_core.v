@@ -93,7 +93,7 @@ module hash_core(
 
         reg [31:0] Kt;
 
-        wire [31:0] f1_EFG_32,f2_ABC_32,f3_A_32,f4_E_32,f5_W1_32,f6_W14_32,T1_32,T2_32;
+        wire [31:0] f1_EFG_32,f2_ABC_32,f3_A_32,f4_E_32,T1_32,T2_32;
         wire [31:0] next_E,next_A;
         wire [255:0] SHA256_result;
         
