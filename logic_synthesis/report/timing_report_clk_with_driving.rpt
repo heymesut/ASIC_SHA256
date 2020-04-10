@@ -1,0 +1,155 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : sha256_chip
+Version: D-2010.03-SP5-3
+Date   : Thu Mar 21 09:03:46 2019
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: slow   Library: slow
+Wire Load Model Mode: segmented
+
+  Startpoint: inst_top/our_message_schedule/Wt_reg_1_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: inst_top/our_hash_core/E_reg_31_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  sha256_chip        smic18_wl10           slow
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             4.30       4.30
+  inst_top/our_message_schedule/Wt_reg_1_/CK (DFFHQX4)
+                                                          0.00 #     4.30 r
+  inst_top/our_message_schedule/Wt_reg_1_/Q (DFFHQX4)     0.29       4.59 f
+  inst_top/our_message_schedule/U12/Y (BUFX20)            0.16       4.75 f
+  inst_top/our_message_schedule/Wt[1] (message_schedule)
+                                                          0.00       4.75 f
+  inst_top/our_hash_core/Wt[1] (hash_core)                0.00       4.75 f
+  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/A[1] (hash_core_DW01_add_19)
+                                                          0.00       4.75 f
+  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U72/Y (OR2X4)
+                                                          0.23       4.98 f
+  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U32/Y (OAI2BB1X4)
+                                                          0.11       5.09 r
+  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U81/Y (XOR2X4)
+                                                          0.26       5.35 f
+  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/SUM[1] (hash_core_DW01_add_19)
+                                                          0.00       5.35 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/B[1] (hash_core_DW01_add_24)
+                                                          0.00       5.35 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/U238/Y (INVX8)
+                                                          0.11       5.47 r
+  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/U102/Y (AOI21X4)
+                                                          0.08       5.54 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/U31/Y (AOI21X4)
+                                                          0.22       5.77 r
+  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/U75/Y (INVX2)
+                                                          0.12       5.89 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/U89/Y (NAND2X4)
+                                                          0.12       6.01 r
+  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/U87/Y (NAND2X4)
+                                                          0.08       6.09 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/U19/Y (XOR2X4)
+                                                          0.26       6.35 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/SUM[3] (hash_core_DW01_add_24)
+                                                          0.00       6.35 f
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/B[3] (hash_core_DW01_add_27)
+                                                          0.00       6.35 f
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U120/Y (OAI221X2)
+                                                          0.25       6.60 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U142/Y (OAI2BB1X4)
+                                                          0.16       6.76 f
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U141/Y (OAI21X4)
+                                                          0.17       6.93 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U140/Y (OAI2BB1X4)
+                                                          0.13       7.06 f
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U137/Y (OAI221X2)
+                                                          0.24       7.30 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U133/Y (AOI31X2)
+                                                          0.22       7.52 f
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U131/Y (NOR2BX4)
+                                                          0.23       7.75 f
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U129/Y (NOR2X4)
+                                                          0.21       7.96 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U80/Y (XOR2X4)
+                                                          0.29       8.25 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U9/Y (BUFX16)
+                                                          0.16       8.41 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/SUM[9] (hash_core_DW01_add_27)
+                                                          0.00       8.41 r
+  inst_top/our_hash_core/add_112/B[9] (hash_core_DW01_add_25)
+                                                          0.00       8.41 r
+  inst_top/our_hash_core/add_112/U124/Y (NAND2X4)         0.06       8.47 f
+  inst_top/our_hash_core/add_112/U208/Y (AND2X4)          0.23       8.70 f
+  inst_top/our_hash_core/add_112/U210/Y (OAI33X2)         0.38       9.08 r
+  inst_top/our_hash_core/add_112/U120/Y (OAI31X2)         0.18       9.26 f
+  inst_top/our_hash_core/add_112/U67/Y (OAI2BB1X4)        0.14       9.40 r
+  inst_top/our_hash_core/add_112/U89/Y (OAI211X2)         0.15       9.55 f
+  inst_top/our_hash_core/add_112/U88/Y (AOI31X2)          0.22       9.78 r
+  inst_top/our_hash_core/add_112/U78/Y (NOR2BX4)          0.25      10.03 r
+  inst_top/our_hash_core/add_112/U59/Y (OAI2BB2X4)        0.11      10.14 f
+  inst_top/our_hash_core/add_112/U83/Y (NAND2X4)          0.15      10.29 r
+  inst_top/our_hash_core/add_112/U80/Y (OAI21X4)          0.10      10.39 f
+  inst_top/our_hash_core/add_112/U79/Y (OAI2BB1X4)        0.19      10.58 r
+  inst_top/our_hash_core/add_112/U75/Y (OAI21X4)          0.10      10.68 f
+  inst_top/our_hash_core/add_112/U74/Y (OAI2BB1X4)        0.17      10.85 r
+  inst_top/our_hash_core/add_112/U95/Y (INVX4)            0.08      10.93 f
+  inst_top/our_hash_core/add_112/U119/Y (NOR2X4)          0.12      11.05 r
+  inst_top/our_hash_core/add_112/U125/Y (NOR2X4)          0.11      11.17 f
+  inst_top/our_hash_core/add_112/U64/Y (OAI21X4)          0.23      11.40 r
+  inst_top/our_hash_core/add_112/U61/Y (OAI21X4)          0.10      11.50 f
+  inst_top/our_hash_core/add_112/U60/Y (OAI2BB1X4)        0.21      11.71 r
+  inst_top/our_hash_core/add_112/U57/Y (AOI21X4)          0.12      11.83 f
+  inst_top/our_hash_core/add_112/U56/Y (AOI2BB1X4)        0.23      12.06 r
+  inst_top/our_hash_core/add_112/U53/Y (OAI21X4)          0.10      12.17 f
+  inst_top/our_hash_core/add_112/U52/Y (OAI2BB1X4)        0.18      12.34 r
+  inst_top/our_hash_core/add_112/U46/Y (AOI21X4)          0.14      12.48 f
+  inst_top/our_hash_core/add_112/U68/Y (OAI2BB1X4)        0.24      12.72 f
+  inst_top/our_hash_core/add_112/U130/Y (NAND2X4)         0.13      12.86 r
+  inst_top/our_hash_core/add_112/U164/Y (AOI21X4)         0.11      12.96 f
+  inst_top/our_hash_core/add_112/U39/Y (AOI2BB1X4)        0.23      13.19 r
+  inst_top/our_hash_core/add_112/U182/Y (AOI2BB1X4)       0.23      13.42 r
+  inst_top/our_hash_core/add_112/U135/Y (NOR2X4)          0.11      13.52 f
+  inst_top/our_hash_core/add_112/U30/Y (OAI21X4)          0.27      13.79 r
+  inst_top/our_hash_core/add_112/U200/Y (OAI21X4)         0.11      13.89 f
+  inst_top/our_hash_core/add_112/U147/Y (OAI2BB1X4)       0.22      14.11 r
+  inst_top/our_hash_core/add_112/U16/Y (NAND2X4)          0.09      14.21 f
+  inst_top/our_hash_core/add_112/U148/Y (AOI2BB2X4)       0.16      14.36 r
+  inst_top/our_hash_core/add_112/U18/Y (XOR2X4)           0.32      14.69 r
+  inst_top/our_hash_core/add_112/SUM[31] (hash_core_DW01_add_25)
+                                                          0.00      14.69 r
+  inst_top/our_hash_core/add_314/A[31] (hash_core_DW01_add_7)
+                                                          0.00      14.69 r
+  inst_top/our_hash_core/add_314/U41/Y (XOR2X4)           0.28      14.97 r
+  inst_top/our_hash_core/add_314/U53/Y (XOR2X4)           0.24      15.21 f
+  inst_top/our_hash_core/add_314/SUM[31] (hash_core_DW01_add_7)
+                                                          0.00      15.21 f
+  inst_top/our_hash_core/U132/Y (OAI2BB1X4)               0.17      15.37 f
+  inst_top/our_hash_core/E_reg_31_/D (DFFX4)              0.00      15.37 f
+  data arrival time                                                 15.37
+
+  clock clk (rise edge)                                  10.00      10.00
+  clock network delay (ideal)                             4.30      14.30
+  clock uncertainty                                      -0.50      13.80
+  inst_top/our_hash_core/E_reg_31_/CK (DFFX4)             0.00      13.80 r
+  library setup time                                     -0.22      13.58
+  data required time                                                13.58
+  --------------------------------------------------------------------------
+  data required time                                                13.58
+  data arrival time                                                -15.37
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                                  -1.79
+
+
+1
