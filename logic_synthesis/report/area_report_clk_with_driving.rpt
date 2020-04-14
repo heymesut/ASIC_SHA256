@@ -3,7 +3,7 @@
 Report : area
 Design : sha256_chip
 Version: D-2010.03-SP5-3
-Date   : Thu Mar 21 09:03:46 2019
+Date   : Thu Mar 21 11:50:01 2019
 ****************************************
 
 Library(s) Used:
@@ -16,10 +16,10 @@ Number of nets:               142
 Number of cells:               72
 Number of references:           3
 
-Combinational area:       1255288.777117
-Noncombinational area:    65643.179058
-Net Interconnect area:    799264.081085
+Combinational area:       1259889.188689
+Noncombinational area:    63417.817169
+Net Interconnect area:    880697.828613
 
-Total cell area:          1320931.956175
-Total area:               2120196.037260
+Total cell area:          1323307.005858
+Total area:               2204004.834471
 1
