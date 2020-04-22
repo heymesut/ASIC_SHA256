@@ -6,7 +6,7 @@ Report : timing
         -max_paths 1
 Design : sha256_chip
 Version: D-2010.03-SP5-3
-Date   : Thu Mar 21 11:50:01 2019
+Date   : Thu Mar 21 17:55:37 2019
 ****************************************
 
  # A fanout number of 1000 was used for high fanout net computations.
@@ -14,9 +14,9 @@ Date   : Thu Mar 21 11:50:01 2019
 Operating Conditions: slow   Library: slow
 Wire Load Model Mode: segmented
 
-  Startpoint: inst_top/our_message_schedule/Wt_reg[1]
+  Startpoint: inst_top/our_hash_core/F_reg[1]
               (rising edge-triggered flip-flop clocked by clk)
-  Endpoint: inst_top/our_hash_core/E_reg[30]
+  Endpoint: inst_top/our_hash_core/G_reg[31]
             (rising edge-triggered flip-flop clocked by clk)
   Path Group: clk
   Path Type: max
@@ -29,107 +29,62 @@ Wire Load Model Mode: segmented
   --------------------------------------------------------------------------
   clock clk (rise edge)                                   0.00       0.00
   clock network delay (ideal)                             4.30       4.30
-  inst_top/our_message_schedule/Wt_reg[1]/CK (DFFHQX4)
-                                                          0.00 #     4.30 r
-  inst_top/our_message_schedule/Wt_reg[1]/Q (DFFHQX4)     0.41       4.71 r
-  inst_top/our_message_schedule/Wt[1] (message_schedule)
-                                                          0.00       4.71 r
-  inst_top/our_hash_core/Wt[1] (hash_core)                0.00       4.71 r
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/B[1] (hash_core_DW01_add_50)
-                                                          0.00       4.71 r
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U294/Y (OR2X4)
-                                                          0.25       4.97 r
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U293/Y (NAND3X4)
-                                                          0.16       5.13 f
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U239/Y (INVX4)
-                                                          0.12       5.25 r
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U238/Y (NAND2X4)
-                                                          0.12       5.37 f
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U235/Y (NAND3BX4)
-                                                          0.22       5.58 r
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U101/Y (INVX4)
-                                                          0.12       5.71 f
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U276/Y (OAI21X4)
-                                                          0.21       5.91 r
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U25/Y (INVX4)
-                                                          0.10       6.01 f
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U270/Y (OAI21X4)
-                                                          0.28       6.29 r
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U72/Y (AOI21X2)
-                                                          0.18       6.47 f
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/U266/Y (XOR2X4)
-                                                          0.29       6.76 f
-  inst_top/our_hash_core/add_3_root_add_0_root_add_108_4/SUM[14] (hash_core_DW01_add_50)
-                                                          0.00       6.76 f
-  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/B[14] (hash_core_DW01_add_56)
-                                                          0.00       6.76 f
-  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/U101/Y (BUFX2)
-                                                          0.23       6.99 f
-  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/U222/Y (NAND2XL)
-                                                          0.30       7.29 r
-  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/U167/Y (AND2X1)
-                                                          0.46       7.75 r
-  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/U270/Y (XOR2X4)
-                                                          0.37       8.12 r
-  inst_top/our_hash_core/add_1_root_add_0_root_add_108_4/SUM[14] (hash_core_DW01_add_56)
-                                                          0.00       8.12 r
-  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/B[14] (hash_core_DW01_add_24)
-                                                          0.00       8.12 r
-  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U355/Y (OR2X4)
-                                                          0.32       8.44 r
-  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U152/Y (NAND3X4)
-                                                          0.15       8.59 f
-  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U351/Y (NAND3BX4)
-                                                          0.25       8.84 f
-  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U153/Y (NAND3X2)
-                                                          0.21       9.05 r
-  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U147/Y (AOI21X4)
-                                                          0.12       9.17 f
-  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U345/Y (OAI21X4)
-                                                          0.17       9.34 r
-  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/U241/Y (XOR2X4)
-                                                          0.38       9.72 r
-  inst_top/our_hash_core/add_0_root_add_0_root_add_108_4/SUM[19] (hash_core_DW01_add_24)
-                                                          0.00       9.72 r
-  inst_top/our_hash_core/add_112/B[19] (hash_core_DW01_add_38)
-                                                          0.00       9.72 r
-  inst_top/our_hash_core/add_112/U268/Y (OR2X4)           0.29      10.02 r
-  inst_top/our_hash_core/add_112/U232/Y (INVX8)           0.09      10.10 f
-  inst_top/our_hash_core/add_112/U59/Y (NOR2X2)           0.18      10.28 r
-  inst_top/our_hash_core/add_112/U25/Y (AOI21X4)          0.09      10.37 f
-  inst_top/our_hash_core/add_112/U264/Y (NAND3X4)         0.17      10.54 r
-  inst_top/our_hash_core/add_112/U260/Y (NAND2X4)         0.18      10.71 f
-  inst_top/our_hash_core/add_112/U259/Y (NAND2X4)         0.13      10.84 r
-  inst_top/our_hash_core/add_112/U257/Y (OAI2BB1X4)       0.25      11.09 r
-  inst_top/our_hash_core/add_112/U17/Y (OAI2BB1X4)        0.24      11.33 r
-  inst_top/our_hash_core/add_112/U15/Y (CLKINVX4)         0.10      11.43 f
-  inst_top/our_hash_core/add_112/U13/Y (NAND2X4)          0.10      11.53 r
-  inst_top/our_hash_core/add_112/U14/Y (NAND2X4)          0.18      11.71 f
-  inst_top/our_hash_core/add_112/SUM[23] (hash_core_DW01_add_38)
-                                                          0.00      11.71 f
-  inst_top/our_hash_core/add_314/A[23] (hash_core_DW01_add_16)
-                                                          0.00      11.71 f
-  inst_top/our_hash_core/add_314/U214/Y (NAND2X2)         0.22      11.93 r
-  inst_top/our_hash_core/add_314/U51/Y (INVX4)            0.08      12.00 f
-  inst_top/our_hash_core/add_314/U242/Y (AOI21X4)         0.18      12.18 r
-  inst_top/our_hash_core/add_314/U55/Y (OAI21X4)          0.12      12.30 f
-  inst_top/our_hash_core/add_314/U241/Y (NAND2X4)         0.15      12.45 r
-  inst_top/our_hash_core/add_314/U232/Y (OAI21X4)         0.14      12.58 f
-  inst_top/our_hash_core/add_314/U71/Y (INVX8)            0.12      12.70 r
-  inst_top/our_hash_core/add_314/U229/Y (OAI21X4)         0.12      12.82 f
-  inst_top/our_hash_core/add_314/U227/Y (AOI21X4)         0.21      13.03 r
-  inst_top/our_hash_core/add_314/U78/Y (XOR2X4)           0.27      13.30 f
-  inst_top/our_hash_core/add_314/SUM[30] (hash_core_DW01_add_16)
-                                                          0.00      13.30 f
-  inst_top/our_hash_core/U271/Y (NAND2X4)                 0.09      13.39 r
-  inst_top/our_hash_core/U270/Y (NAND3X4)                 0.10      13.49 f
-  inst_top/our_hash_core/E_reg[30]/D (DFFHQX4)            0.00      13.49 f
+  inst_top/our_hash_core/F_reg[1]/CK (DFFX4)              0.00 #     4.30 r
+  inst_top/our_hash_core/F_reg[1]/Q (DFFX4)               0.32       4.62 f
+  inst_top/our_hash_core/add_316/A[1] (hash_core_DW01_add_1)
+                                                          0.00       4.62 f
+  inst_top/our_hash_core/add_316/U1_1/CO (ADDFHX4)        0.46       5.08 f
+  inst_top/our_hash_core/add_316/U1_2/CO (ADDFHX2)        0.25       5.33 f
+  inst_top/our_hash_core/add_316/U1_3/CO (ADDFHX4)        0.29       5.62 f
+  inst_top/our_hash_core/add_316/U9/CO (ADDFHX4)          0.30       5.92 f
+  inst_top/our_hash_core/add_316/U8/Y (NAND2X4)           0.12       6.04 r
+  inst_top/our_hash_core/add_316/U49/Y (NAND3X4)          0.11       6.15 f
+  inst_top/our_hash_core/add_316/U1_6/CO (ADDFHX2)        0.27       6.42 f
+  inst_top/our_hash_core/add_316/U1_7/CO (ADDFHX4)        0.26       6.68 f
+  inst_top/our_hash_core/add_316/U1_8/CO (ADDFHX4)        0.25       6.93 f
+  inst_top/our_hash_core/add_316/U1_9/CO (ADDFHX4)        0.28       7.21 f
+  inst_top/our_hash_core/add_316/U17/CO (ADDFHX4)         0.30       7.52 f
+  inst_top/our_hash_core/add_316/U29/Y (NAND2X4)          0.15       7.66 r
+  inst_top/our_hash_core/add_316/U24/Y (NAND3X4)          0.16       7.82 f
+  inst_top/our_hash_core/add_316/U33/Y (NAND2X4)          0.12       7.95 r
+  inst_top/our_hash_core/add_316/U10/Y (NAND3X4)          0.11       8.06 f
+  inst_top/our_hash_core/add_316/U1_13/CO (ADDFHX4)       0.27       8.32 f
+  inst_top/our_hash_core/add_316/U1_14/CO (ADDFHX4)       0.25       8.58 f
+  inst_top/our_hash_core/add_316/U1_15/CO (ADDFHX4)       0.25       8.83 f
+  inst_top/our_hash_core/add_316/U1_16/CO (ADDFHX4)       0.25       9.08 f
+  inst_top/our_hash_core/add_316/U1_17/CO (ADDFHX4)       0.28       9.37 f
+  inst_top/our_hash_core/add_316/U1_18/CO (ADDFHX4)       0.30       9.67 f
+  inst_top/our_hash_core/add_316/U44/Y (NAND2X4)          0.12       9.79 r
+  inst_top/our_hash_core/add_316/U46/Y (NAND3X4)          0.12       9.90 f
+  inst_top/our_hash_core/add_316/U1_20/CO (ADDFHX2)       0.26      10.17 f
+  inst_top/our_hash_core/add_316/U1_21/CO (ADDFHX2)       0.26      10.42 f
+  inst_top/our_hash_core/add_316/U1_22/CO (ADDFHX4)       0.26      10.68 f
+  inst_top/our_hash_core/add_316/U1_23/CO (ADDFHX4)       0.32      11.00 f
+  inst_top/our_hash_core/add_316/U25/Y (NAND2BX4)         0.11      11.11 r
+  inst_top/our_hash_core/add_316/U16/Y (AND2X4)           0.17      11.28 r
+  inst_top/our_hash_core/add_316/U50/Y (NAND2X4)          0.07      11.34 f
+  inst_top/our_hash_core/add_316/U1_25/CO (ADDFHX4)       0.29      11.63 f
+  inst_top/our_hash_core/add_316/U23/CO (ADDFHX4)         0.28      11.91 f
+  inst_top/our_hash_core/add_316/U26/Y (NAND2BX4)         0.11      12.02 r
+  inst_top/our_hash_core/add_316/U55/Y (NAND2X4)          0.09      12.11 f
+  inst_top/our_hash_core/add_316/U57/Y (CLKINVX8)         0.08      12.19 r
+  inst_top/our_hash_core/add_316/U19/Y (NAND2X4)          0.08      12.28 f
+  inst_top/our_hash_core/add_316/U18/CO (ADDFHX4)         0.28      12.56 f
+  inst_top/our_hash_core/add_316/U38/Y (NAND2X4)          0.11      12.67 r
+  inst_top/our_hash_core/add_316/U40/Y (NAND3X4)          0.12      12.78 f
+  inst_top/our_hash_core/add_316/U1_30/CO (ADDFHX4)       0.28      13.06 f
+  inst_top/our_hash_core/add_316/U1/Y (XNOR2X4)           0.21      13.27 f
+  inst_top/our_hash_core/add_316/SUM[31] (hash_core_DW01_add_1)
+                                                          0.00      13.27 f
+  inst_top/our_hash_core/U335/Y (AOI2BB2X4)               0.16      13.42 r
+  inst_top/our_hash_core/U352/Y (NAND2X4)                 0.07      13.49 f
+  inst_top/our_hash_core/G_reg[31]/D (DFFHQX1)            0.00      13.49 f
   data arrival time                                                 13.49
 
   clock clk (rise edge)                                  10.00      10.00
   clock network delay (ideal)                             4.30      14.30
   clock uncertainty                                      -0.50      13.80
-  inst_top/our_hash_core/E_reg[30]/CK (DFFHQX4)           0.00      13.80 r
+  inst_top/our_hash_core/G_reg[31]/CK (DFFHQX1)           0.00      13.80 r
   library setup time                                     -0.31      13.49
   data required time                                                13.49
   --------------------------------------------------------------------------

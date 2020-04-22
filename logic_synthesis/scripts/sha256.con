@@ -59,3 +59,5 @@ set_max_transition 3.0 [current_design]
 set_ideal_network {reset}
 set_dont_touch [get_cells "PIW* PO8W*"] true
 set_fix_multiple_port_nets -all -buffer_constants
+
+set_flatten true

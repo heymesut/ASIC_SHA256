@@ -7,14 +7,14 @@ input wire  last_block;
 input wire  first_block;
 
 output wire  busy;
-output wire  [31:0] digest;
+output wire  [7:0] digest;
 output wire  output_enable;
 
 wire net_clk,net_reset;
 wire [31:0] net_data;
 wire net_write_enable,net_last_block,net_first_block;
 wire net_busy;
-wire [31:0] net_digest;
+wire [7:0] net_digest;
 wire net_output_enable;
 
 PIW
@@ -66,30 +66,6 @@ PO8W
         PO8W_digest5(.I(net_digest[5]),.PAD(digest[5])),
         PO8W_digest6(.I(net_digest[6]),.PAD(digest[6])),
         PO8W_digest7(.I(net_digest[7]),.PAD(digest[7])),
-        PO8W_digest8(.I(net_digest[8]),.PAD(digest[8])),
-        PO8W_digest9(.I(net_digest[9]),.PAD(digest[9])),
-        PO8W_digest10(.I(net_digest[10]),.PAD(digest[10])),
-        PO8W_digest11(.I(net_digest[11]),.PAD(digest[11])),
-        PO8W_digest12(.I(net_digest[12]),.PAD(digest[12])),
-        PO8W_digest13(.I(net_digest[13]),.PAD(digest[13])),
-        PO8W_digest14(.I(net_digest[14]),.PAD(digest[14])),
-        PO8W_digest15(.I(net_digest[15]),.PAD(digest[15])),
-        PO8W_digest16(.I(net_digest[16]),.PAD(digest[16])),
-        PO8W_digest17(.I(net_digest[17]),.PAD(digest[17])),
-        PO8W_digest18(.I(net_digest[18]),.PAD(digest[18])),
-        PO8W_digest19(.I(net_digest[19]),.PAD(digest[19])),
-        PO8W_digest20(.I(net_digest[20]),.PAD(digest[20])),
-        PO8W_digest21(.I(net_digest[21]),.PAD(digest[21])),
-        PO8W_digest22(.I(net_digest[22]),.PAD(digest[22])),
-        PO8W_digest23(.I(net_digest[23]),.PAD(digest[23])),
-        PO8W_digest24(.I(net_digest[24]),.PAD(digest[24])),
-        PO8W_digest25(.I(net_digest[25]),.PAD(digest[25])),
-        PO8W_digest26(.I(net_digest[26]),.PAD(digest[26])),
-        PO8W_digest27(.I(net_digest[27]),.PAD(digest[27])),
-        PO8W_digest28(.I(net_digest[28]),.PAD(digest[28])),
-        PO8W_digest29(.I(net_digest[29]),.PAD(digest[29])),
-        PO8W_digest30(.I(net_digest[30]),.PAD(digest[30])),
-        PO8W_digest31(.I(net_digest[31]),.PAD(digest[31])),
         PO8W_output_enable(.I(net_output_enable),.PAD(output_enable));
 
 top inst_top(.clk(net_clk),.reset(net_reset),.data(net_data),.write_enable(net_write_enable),.first_block(net_first_block),.last_block(net_last_block),.busy(net_busy),.digest(net_digest),.output_enable(net_output_enable));
