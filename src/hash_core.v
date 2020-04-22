@@ -80,7 +80,7 @@ module hash_core(
         input   wire           inner_busy,
         input   wire           first_block,
         input   wire           output_enable,
-        output  reg [31:0]     digest
+        output  reg [7:0]      digest
                 );
         
         wire [2:0] cmd;  //2:output_enable  1:inner_busy    0:first round
@@ -89,7 +89,7 @@ module hash_core(
         reg  [6:0] round;
         wire [6:0] round_plus_1;
 
-        reg [2:0] read_counter;
+        reg [4:0] read_counter;
 
         reg [31:0] Kt;
 
@@ -451,32 +451,56 @@ module hash_core(
                 if (reset)
                 begin
                         digest <= 'b0;
-                        read_counter <= 'd7;
+                        read_counter <= 'd31;
                 end
                 else
                 begin
                         if (cmd[2])
                         begin
                                 case (read_counter)
-                                        'd7:    digest <= SHA256_result[8*32-1:7*32];
-                                        'd6:    digest <= SHA256_result[7*32-1:6*32];
-                                        'd5:    digest <= SHA256_result[6*32-1:5*32];
-                                        'd4:    digest <= SHA256_result[5*32-1:4*32];
-                                        'd3:    digest <= SHA256_result[4*32-1:3*32];
-                                        'd2:    digest <= SHA256_result[3*32-1:2*32];
-                                        'd1:    digest <= SHA256_result[2*32-1:1*32];
-                                        'd0:    digest <= SHA256_result[1*32-1:0*32];
+                                        'd31:    digest <= SHA256_result[32*8-1:31*8];
+                                        'd30:    digest <= SHA256_result[31*8-1:30*8];
+                                        'd29:    digest <= SHA256_result[30*8-1:29*8];
+                                        'd28:    digest <= SHA256_result[29*8-1:28*8];
+                                        'd27:    digest <= SHA256_result[28*8-1:27*8];
+                                        'd26:    digest <= SHA256_result[27*8-1:26*8];
+                                        'd25:    digest <= SHA256_result[26*8-1:25*8];
+                                        'd24:    digest <= SHA256_result[25*8-1:24*8];
+                                        'd23:    digest <= SHA256_result[24*8-1:23*8];
+                                        'd22:    digest <= SHA256_result[23*8-1:22*8];
+                                        'd21:    digest <= SHA256_result[22*8-1:21*8];
+                                        'd20:    digest <= SHA256_result[21*8-1:20*8];
+                                        'd19:    digest <= SHA256_result[20*8-1:19*8]; 
+                                        'd18:    digest <= SHA256_result[19*8-1:18*8];
+                                        'd17:    digest <= SHA256_result[18*8-1:17*8];
+                                        'd16:    digest <= SHA256_result[17*8-1:16*8];
+                                        'd15:    digest <= SHA256_result[16*8-1:15*8];
+                                        'd14:    digest <= SHA256_result[15*8-1:14*8];
+                                        'd13:    digest <= SHA256_result[14*8-1:13*8];
+                                        'd12:    digest <= SHA256_result[13*8-1:12*8];
+                                        'd11:    digest <= SHA256_result[12*8-1:11*8];
+                                        'd10:    digest <= SHA256_result[11*8-1:10*8];
+                                        'd9:    digest <= SHA256_result[10*8-1:9*8];
+                                        'd8:    digest <= SHA256_result[9*8-1:8*8];
+                                        'd7:    digest <= SHA256_result[8*8-1:7*8];
+                                        'd6:    digest <= SHA256_result[7*8-1:6*8];
+                                        'd5:    digest <= SHA256_result[6*8-1:5*8];
+                                        'd4:    digest <= SHA256_result[5*8-1:4*8];
+                                        'd3:    digest <= SHA256_result[4*8-1:3*8];
+                                        'd2:    digest <= SHA256_result[3*8-1:2*8];
+                                        'd1:    digest <= SHA256_result[2*8-1:1*8];
+                                        'd0:    digest <= SHA256_result[1*8-1:0*8];
                                         default:digest <= 'b0;
                                 endcase
                                 if (read_counter != 'd0)
                                         read_counter <= read_counter - 'd1;
                                 else
-                                        read_counter <= 'd7;
+                                        read_counter <= 'd31;
                         end
                         else
                         begin
                                 digest <= 'b0;
-                                read_counter <= 'd7;
+                                read_counter <= 'd31;
                         end
                 end
         end
