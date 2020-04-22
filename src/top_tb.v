@@ -14,14 +14,15 @@ module top_tb;
 
     // Outputs
     wire busy;
-    wire [31:0]  digest;
+    //wire [31:0]  digest;
+    wire [7:0]  digest;
     wire output_enable;
 
     // temp 
-    reg [31:0] tmp;
+    reg [7:0] tmp;
     reg [255:0] result;
     reg flag;
-    integer i;
+    //integer i;
 
 //data:00000000000000000000000000000000000000000000000000000000(0 ASCII:8'h30)
 //加密后：bd03ac1428f0ea86f4b83a731ffc7967bb82866d8545322f888d2f6e857ffc18
@@ -70,7 +71,7 @@ module top_tb;
         end
         else 
         begin
-        tmp = result[8*32-1:7*32];
+        tmp = result[32*8-1:31*8];
         //tmp = result[(8-i)*32-1:(7-i)*32];
         if(digest==tmp)
             begin
@@ -82,7 +83,7 @@ module top_tb;
                 $display("ERROR! Expected %x. Got %x.",tmp,digest);
                 //flag <= 1'b0;
             end
-        result = result << 32;
+        result = result << 8;
 //        case(flag)
 //            3'b000: flag => 3'b001;
 //            3'b001: flag <= 3'b010;
