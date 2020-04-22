@@ -28,7 +28,7 @@ reg  [1:0]         state;
 reg  [1:0]         next_state;
 
 reg  [6:0]         counter1;
-reg  [2:0]         counter2;
+reg  [4:0]         counter2;
 
 parameter s0=2'b00;//idle
 parameter s1=2'b01;//iteration
@@ -61,7 +61,7 @@ begin
         else
             next_state=s1;
       s2:
-        if(counter2==3'd7)
+        if(counter2==5'd31)
             next_state=s0;
         else
             next_state=s2; 
@@ -87,12 +87,12 @@ end
 always @ (posedge clk)
 begin
     if(reset==1'b1)
-        counter2<=3'd0;
+        counter2<=5'd0;
     else
         if(state==s2)
             counter2<=counter2+1;
         else
-            counter2<=3'd0; 
+            counter2<=5'd0; 
 end
 
 

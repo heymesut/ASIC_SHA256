@@ -23,7 +23,7 @@ module top(
     input  wire                last_block,
     input  wire                first_block,
     output wire                busy,
-    output wire [31:0]         digest,
+    output wire [7:0]          digest,
     output wire                output_enable           
 );
 
