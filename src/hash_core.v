@@ -80,7 +80,7 @@ module hash_core(
         input   wire           inner_busy,
         input   wire           first_block,
         input   wire           output_enable,
-        output  reg [7:0]      digest
+        output  reg [3:0]      digest
                 );
         
         wire [2:0] cmd;  //2:output_enable  1:inner_busy    0:first round
@@ -89,9 +89,15 @@ module hash_core(
         reg  [6:0] round;
         wire [6:0] round_plus_1;
 
-        reg [4:0] read_counter;
+        reg [5:0] read_counter;
 
         reg [31:0] Kt;
+
+        reg [1:0] mux_control;//1:mux1 , 0:mux2
+        wire [31:0] mux1,mux2;
+
+        reg [31:0] M,L;//pipeline
+        wire [31:0] M_w;
 
         wire [31:0] f1_EFG_32,f2_ABC_32,f3_A_32,f4_E_32,T1_32,T2_32;
         wire [31:0] next_E,next_A;
@@ -105,12 +111,18 @@ module hash_core(
         
         assign f4_E_32 = {E[5:0],E[31:6]} ^ {E[10:0],E[31:11]} ^ {E[24:0],E[31:25]};  //sigma1(e)
          
-        assign T1_32 = H[31:0] + f4_E_32 + f1_EFG_32 + Kt + Wt;
+        assign mux2 = mux_control[0] ? G[31:0] : H[31:0];
+        assign mux1 = mux_control[1] ? C[31:0] : D[31:0];
+
+        assign M_w = mux2 + Kt + Wt;
+        //assign T1_32 = H[31:0] + f4_E_32 + f1_EFG_32 + Kt + Wt;
         
+        assign T1_32 = f4_E_32 + f1_EFG_32 + M;
+
         assign T2_32 = f3_A_32 + f2_ABC_32;
 
-        assign next_E = D[31:0] + T1_32;
-        assign next_A = T1_32 + T2_32;
+        assign next_E = mux1 + T1_32;
+        assign next_A = L + T2_32;
         
         assign SHA256_result = {A,B,C,D,E,F,G,H};
 
@@ -126,7 +138,10 @@ module hash_core(
                 if (reset == 1'b1 || (cmd[1] == 1'b0 && cmd[2] == 1'b0) )
                 begin
                         round <= 'd0;
-                        
+                        mux_control <= 2'b0;
+                        M <= 32'b0;
+                        L <= 32'b0;
+
                         A <= 32'b0;
                         B <= 32'b0;
                         C <= 32'b0;
@@ -166,7 +181,10 @@ module hash_core(
                                 H6 <= H6;
                                 H7 <= H7;
 
-                                round <= 'd0;                                                                                               
+                                round <= 'd0; 
+                                mux_control <= 2'b0;
+                                M <= 32'b0;
+                                L <= 32'b0;                                                                                              
                         end
                         else
                         begin
@@ -174,7 +192,7 @@ module hash_core(
                         
                                 'd0:
                                         begin            
-                                                if(first_block==1'b1) // sha-256 first message
+                                                if(cmd[0]==1'b1) // sha-256 first message
                                                 begin
                                                         A <= `SHA256_H0;
                                                         B <= `SHA256_H1;
@@ -195,6 +213,10 @@ module hash_core(
                                                         H7 <= `SHA256_H7;
 
                                                         round <=round_plus_1;
+                                                        mux_control[1:0] <= 2'b0;
+
+                                                        M <= 'b0;
+                                                        L <= 'b0;
                                                 end
                                                 else   // sha-256 internal message
                                                 begin
@@ -217,11 +239,52 @@ module hash_core(
                                                         H7 <= H;
 
                                                         round <=round_plus_1;
+                                                        mux_control[1:0] <= 2'b0;
+
+                                                        M <= 'b0;
+                                                        L <= 'b0;
                                                 end
                                         end
                                         
-                                'd1,
-                                'd2,
+                                'd1:
+                                        begin
+                                                // H0 <= H0;
+                                                // H1 <= H1;
+                                                // H2 <= H2;
+                                                // H3 <= H3;
+                                                // H4 <= H4;
+                                                // H5 <= H5;
+                                                // H6 <= H6;
+                                                // H7 <= H7;
+                                                L <= T1_32;
+                                                M <= M_w;
+                                                
+                                                round <= round_plus_1;
+                                                mux_control[1:0] <= 2'b01;
+                                        end
+                                'd2:
+                                        begin
+                                                
+                                                H <= G;
+                                                G <= F;
+                                                F <= E;
+                                                E <= next_E;
+
+                                                L <= T1_32;
+                                                M <= M_w;
+
+                                                // H0 <= H0;
+                                                // H1 <= H1;
+                                                // H2 <= H2;
+                                                // H3 <= H3;
+                                                // H4 <= H4;
+                                                // H5 <= H5;
+                                                // H6 <= H6;
+                                                // H7 <= H7;
+                                                
+                                                round <= round_plus_1;
+                                                mux_control[1:0] <= 2'b11;
+                                        end
                                 'd3,
                                 'd4,
                                 'd5,
@@ -282,9 +345,9 @@ module hash_core(
                                 'd60,
                                 'd61,
                                 'd62,
-                                'd63:
+                                'd63,
+                                'd64:
                                         begin
-                                                
                                                 H <= G;
                                                 G <= F;
                                                 F <= E;
@@ -294,40 +357,90 @@ module hash_core(
                                                 B <= A;
                                                 A <= next_A;
 
-                                                H0 <= H0;
-                                                H1 <= H1;
-                                                H2 <= H2;
-                                                H3 <= H3;
-                                                H4 <= H4;
-                                                H5 <= H5;
-                                                H6 <= H6;
-                                                H7 <= H7;
+
+                                                L <= T1_32;
+                                                M <= M_w;
+
+                                                // H0 <= H0;
+                                                // H1 <= H1;
+                                                // H2 <= H2;
+                                                // H3 <= H3;
+                                                // H4 <= H4;
+                                                // H5 <= H5;
+                                                // H6 <= H6;
+                                                // H7 <= H7;
                                                 
                                                 round <= round_plus_1;
                                         end
-                                'd64:
-                                        begin   //update hash_val 
-                                                A <= next_A + H0;
-                                                B <= A + H1;
-                                                C <= B + H2;
-                                                D <= C + H3;
-                                                E <= next_E + H4;
-                                                F <= E + H5;
-                                                G <= F + H6;
+                                'd65:
+                                        begin
                                                 H <= G + H7;
+                                                G <= F + H6;
+                                                F <= E + H5;
+                                                E <= next_E + H4;
+                                                D <= C;
+                                                C <= B;
+                                                B <= A;
+                                                A <= next_A;
 
-                                                H0 <= H0;
-                                                H1 <= H1;
-                                                H2 <= H2;
-                                                H3 <= H3;
-                                                H4 <= H4;
-                                                H5 <= H5;
-                                                H6 <= H6;
-                                                H7 <= H7;
+                                                L <= T1_32;
+                                                M <= M_w;
 
-                                                round <= 'd0;
-                                        
+                                                // H0 <= H0;
+                                                // H1 <= H1;
+                                                // H2 <= H2;
+                                                // H3 <= H3;
+                                                // H4 <= H4;
+                                                // H5 <= H5;
+                                                // H6 <= H6;
+                                                // H7 <= H7;
+                                                
+                                                round <= round_plus_1;
                                         end
+                                'd66:
+                                        begin
+                                                D <= C + H3;
+                                                C <= B + H2;
+                                                B <= A + H1;
+                                                A <= next_A + H0;
+
+                                                L <= T1_32;
+                                                M <= M_w;
+
+                                                // H0 <= H0;
+                                                // H1 <= H1;
+                                                // H2 <= H2;
+                                                // H3 <= H3;
+                                                // H4 <= H4;
+                                                // H5 <= H5;
+                                                // H6 <= H6;
+                                                // H7 <= H7;
+                                                
+                                                round <= 0;
+                                        end   
+                                // 'd64:
+                                //         begin   //update hash_val 
+                                //                 A <= next_A + H0;
+                                //                 B <= A + H1;
+                                //                 C <= B + H2;
+                                //                 D <= C + H3;
+                                //                 E <= next_E + H4;
+                                //                 F <= E + H5;
+                                //                 G <= F + H6;
+                                //                 H <= G + H7;
+
+                                //                 H0 <= H0;
+                                //                 H1 <= H1;
+                                //                 H2 <= H2;
+                                //                 H3 <= H3;
+                                //                 H4 <= H4;
+                                //                 H5 <= H5;
+                                //                 H6 <= H6;
+                                //                 H7 <= H7;
+
+                                //                 round <= 'd0;
+                                        
+                                //         end
                                 default:
                                         begin
                                                 A <= 'b0;
@@ -349,6 +462,10 @@ module hash_core(
                                                 H7 <= 'b0;
 
                                                 round <= 'd0;
+                                                mux_control <= 2'b00;
+
+                                                M <= 'b0;
+                                                L <= 'b0;
                                         end
                                 endcase
                         end     
@@ -451,56 +568,88 @@ module hash_core(
                 if (reset)
                 begin
                         digest <= 'b0;
-                        read_counter <= 'd31;
+                        read_counter <= 'd63;
                 end
                 else
                 begin
                         if (cmd[2])
                         begin
                                 case (read_counter)
-                                        'd31:    digest <= SHA256_result[32*8-1:31*8];
-                                        'd30:    digest <= SHA256_result[31*8-1:30*8];
-                                        'd29:    digest <= SHA256_result[30*8-1:29*8];
-                                        'd28:    digest <= SHA256_result[29*8-1:28*8];
-                                        'd27:    digest <= SHA256_result[28*8-1:27*8];
-                                        'd26:    digest <= SHA256_result[27*8-1:26*8];
-                                        'd25:    digest <= SHA256_result[26*8-1:25*8];
-                                        'd24:    digest <= SHA256_result[25*8-1:24*8];
-                                        'd23:    digest <= SHA256_result[24*8-1:23*8];
-                                        'd22:    digest <= SHA256_result[23*8-1:22*8];
-                                        'd21:    digest <= SHA256_result[22*8-1:21*8];
-                                        'd20:    digest <= SHA256_result[21*8-1:20*8];
-                                        'd19:    digest <= SHA256_result[20*8-1:19*8]; 
-                                        'd18:    digest <= SHA256_result[19*8-1:18*8];
-                                        'd17:    digest <= SHA256_result[18*8-1:17*8];
-                                        'd16:    digest <= SHA256_result[17*8-1:16*8];
-                                        'd15:    digest <= SHA256_result[16*8-1:15*8];
-                                        'd14:    digest <= SHA256_result[15*8-1:14*8];
-                                        'd13:    digest <= SHA256_result[14*8-1:13*8];
-                                        'd12:    digest <= SHA256_result[13*8-1:12*8];
-                                        'd11:    digest <= SHA256_result[12*8-1:11*8];
-                                        'd10:    digest <= SHA256_result[11*8-1:10*8];
-                                        'd9:    digest <= SHA256_result[10*8-1:9*8];
-                                        'd8:    digest <= SHA256_result[9*8-1:8*8];
-                                        'd7:    digest <= SHA256_result[8*8-1:7*8];
-                                        'd6:    digest <= SHA256_result[7*8-1:6*8];
-                                        'd5:    digest <= SHA256_result[6*8-1:5*8];
-                                        'd4:    digest <= SHA256_result[5*8-1:4*8];
-                                        'd3:    digest <= SHA256_result[4*8-1:3*8];
-                                        'd2:    digest <= SHA256_result[3*8-1:2*8];
-                                        'd1:    digest <= SHA256_result[2*8-1:1*8];
-                                        'd0:    digest <= SHA256_result[1*8-1:0*8];
+                                        'd63:    digest <= SHA256_result[64*4-1:63*4];
+                                        'd62:    digest <= SHA256_result[63*4-1:62*4];
+                                        'd61:    digest <= SHA256_result[62*4-1:61*4];
+                                        'd60:    digest <= SHA256_result[61*4-1:60*4];
+                                        'd59:    digest <= SHA256_result[60*4-1:59*4];
+                                        'd58:    digest <= SHA256_result[59*4-1:58*4];
+                                        'd57:    digest <= SHA256_result[58*4-1:57*4];
+                                        'd56:    digest <= SHA256_result[57*4-1:56*4];
+                                        'd55:    digest <= SHA256_result[56*4-1:55*4];
+                                        'd54:    digest <= SHA256_result[55*4-1:54*4];
+                                        'd53:    digest <= SHA256_result[54*4-1:53*4];
+                                        'd52:    digest <= SHA256_result[53*4-1:52*4];
+                                        'd51:    digest <= SHA256_result[52*4-1:51*4];
+                                        'd50:    digest <= SHA256_result[51*4-1:50*4];
+                                        'd49:    digest <= SHA256_result[50*4-1:49*4];
+                                        'd48:    digest <= SHA256_result[49*4-1:48*4];
+                                        'd47:    digest <= SHA256_result[48*4-1:47*4];
+                                        'd46:    digest <= SHA256_result[47*4-1:46*4];
+                                        'd45:    digest <= SHA256_result[46*4-1:45*4];
+                                        'd44:    digest <= SHA256_result[45*4-1:44*4];
+                                        'd43:    digest <= SHA256_result[44*4-1:43*4];
+                                        'd42:    digest <= SHA256_result[43*4-1:42*4];
+                                        'd41:    digest <= SHA256_result[42*4-1:41*4];
+                                        'd40:    digest <= SHA256_result[41*4-1:40*4];
+                                        'd39:    digest <= SHA256_result[40*4-1:39*4];
+                                        'd38:    digest <= SHA256_result[39*4-1:38*4];
+                                        'd37:    digest <= SHA256_result[38*4-1:37*4];
+                                        'd36:    digest <= SHA256_result[37*4-1:36*4];
+                                        'd35:    digest <= SHA256_result[36*4-1:35*4];
+                                        'd34:    digest <= SHA256_result[35*4-1:34*4];
+                                        'd33:    digest <= SHA256_result[34*4-1:33*4];
+                                        'd32:    digest <= SHA256_result[33*4-1:32*4];
+                                        'd31:    digest <= SHA256_result[32*4-1:31*4];
+                                        'd30:    digest <= SHA256_result[31*4-1:30*4];
+                                        'd29:    digest <= SHA256_result[30*4-1:29*4];
+                                        'd28:    digest <= SHA256_result[29*4-1:28*4];
+                                        'd27:    digest <= SHA256_result[28*4-1:27*4];
+                                        'd26:    digest <= SHA256_result[27*4-1:26*4];
+                                        'd25:    digest <= SHA256_result[26*4-1:25*4];
+                                        'd24:    digest <= SHA256_result[25*4-1:24*4];
+                                        'd23:    digest <= SHA256_result[24*4-1:23*4];
+                                        'd22:    digest <= SHA256_result[23*4-1:22*4];
+                                        'd21:    digest <= SHA256_result[22*4-1:21*4];
+                                        'd20:    digest <= SHA256_result[21*4-1:20*4];
+                                        'd19:    digest <= SHA256_result[20*4-1:19*4]; 
+                                        'd18:    digest <= SHA256_result[19*4-1:18*4];
+                                        'd17:    digest <= SHA256_result[18*4-1:17*4];
+                                        'd16:    digest <= SHA256_result[17*4-1:16*4];
+                                        'd15:    digest <= SHA256_result[16*4-1:15*4];
+                                        'd14:    digest <= SHA256_result[15*4-1:14*4];
+                                        'd13:    digest <= SHA256_result[14*4-1:13*4];
+                                        'd12:    digest <= SHA256_result[13*4-1:12*4];
+                                        'd11:    digest <= SHA256_result[12*4-1:11*4];
+                                        'd10:    digest <= SHA256_result[11*4-1:10*4];
+                                        'd9:    digest <= SHA256_result[10*4-1:9*4];
+                                        'd8:    digest <= SHA256_result[9*4-1:8*4];
+                                        'd7:    digest <= SHA256_result[8*4-1:7*4];
+                                        'd6:    digest <= SHA256_result[7*4-1:6*4];
+                                        'd5:    digest <= SHA256_result[6*4-1:5*4];
+                                        'd4:    digest <= SHA256_result[5*4-1:4*4];
+                                        'd3:    digest <= SHA256_result[4*4-1:3*4];
+                                        'd2:    digest <= SHA256_result[3*4-1:2*4];
+                                        'd1:    digest <= SHA256_result[2*4-1:1*4];
+                                        'd0:    digest <= SHA256_result[1*4-1:0*4];
                                         default:digest <= 'b0;
                                 endcase
                                 if (read_counter != 'd0)
                                         read_counter <= read_counter - 'd1;
                                 else
-                                        read_counter <= 'd31;
+                                        read_counter <= 'd63;
                         end
                         else
                         begin
                                 digest <= 'b0;
-                                read_counter <= 'd31;
+                                read_counter <= 'd63;
                         end
                 end
         end
