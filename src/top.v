@@ -4,13 +4,13 @@
 //parameter:description
 //clk
 //reset:high enable
-//data:input message(32 bits input per cycle)
+//data:input message(8 bits input per cycle)
 //write_enable:when input data is valid,set 1
 //last_block: when input is the last block,set 1 during the first cycle
 //first_block:when input is the first bolck,set 1 during the first cycle and
 //the last cycle before input
 //busy:when the module is working,set 1
-//digest:output digest(32 bits output per cycle)
+//digest:output digest(4 bits output per cycle)
 //output_enable: when output digest is valid,set 1
 //////////////////////////////////////////////////
 
@@ -18,12 +18,12 @@
 module top(
     input  wire                clk,
     input  wire                reset,
-    input  wire [31:0]         data,
+    input  wire [7:0]          data,
     input  wire                write_enable,
     input  wire                last_block,
     input  wire                first_block,
     output wire                busy,
-    output wire [7:0]          digest,
+    output wire [3:0]          digest,
     output wire                output_enable           
 );
 

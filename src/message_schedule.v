@@ -4,7 +4,7 @@
 //parameter:description
 //clk
 //reset:high enable
-//data:input message(32 bits input per cycle)
+//data:input message(8 bits input per cycle)
 //write_enable:when input data is valid,set 1
 //inner_busy:set 1 to enable message schedule module
 //Wt:message schedule module output(the first register(R0) of register array)(to hash core module)
@@ -14,7 +14,7 @@
 module message_schedule(
     input  wire            clk,
     input  wire            reset,
-    input  wire [31:0]     data,
+    input  wire [7:0]      data,
     input  wire            write_enable,
     input  wire            inner_busy,
     output reg  [31:0]     Wt
@@ -24,7 +24,8 @@ wire [31:0]     logic_result;
 wire [31:0]     sigma0;
 wire [31:0]     sigma1;   
 reg  [31:0]     R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14,R15;//register array
-reg  [6 :0]     counter;
+reg  [31:0]     buffer [0:15]; 
+reg  [6 :0]     counter1,counter2;
 
 //sigma calculation
 assign sigma0 = {R14[6:0],R14[31:7]} ^ {R14[17:0],R14[31:18]} ^ {3'b000,R14[31:3]};
@@ -34,12 +35,439 @@ assign sigma1 = {R1[16:0],R1[31:17]} ^ {R1[18:0],R1[31:19]} ^ {10'b00_0000_0000,
 assign logic_result = R15 + sigma0 + R6 + sigma1; 
 
 
+//input buffer
+always @ (posedge clk)
+begin
+    if(reset==1'b1)
+        begin
+            buffer[0]<=32'b0;
+            buffer[1]<=32'b0;
+            buffer[2]<=32'b0;
+            buffer[3]<=32'b0;
+            buffer[4]<=32'b0;
+            buffer[5]<=32'b0;
+            buffer[6]<=32'b0;
+            buffer[7]<=32'b0;
+            buffer[8]<=32'b0;
+            buffer[9]<=32'b0;
+            buffer[10]<=32'b0;
+            buffer[11]<=32'b0;
+            buffer[12]<=32'b0;
+            buffer[13]<=32'b0;
+            buffer[14]<=32'b0;
+            buffer[15]<=32'b0;
+        end
+    else
+        if(write_enable==1'b0)
+            begin
+                buffer[0]<=buffer[0];
+                buffer[1]<=buffer[1];
+                buffer[2]<=buffer[2];
+                buffer[3]<=buffer[3];
+                buffer[4]<=buffer[4];
+                buffer[5]<=buffer[5];
+                buffer[6]<=buffer[6];
+                buffer[7]<=buffer[7];
+                buffer[8]<=buffer[8];
+                buffer[9]<=buffer[9];
+                buffer[10]<=buffer[10];
+                buffer[11]<=buffer[11];
+                buffer[12]<=buffer[12];
+                buffer[13]<=buffer[13];
+                buffer[14]<=buffer[14];
+                buffer[15]<=buffer[15];     
+            end
+        else
+            case(counter1)
+                7'd0,
+                7'd1,
+                7'd2,
+                7'd3:
+                    begin
+                        buffer[0]<=(buffer[0]<<8)+data;
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd4,
+                7'd5,
+                7'd6,
+                7'd7:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=(buffer[1]<<8)+data;
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd8,
+                7'd9,
+                7'd10,
+                7'd11:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=(buffer[2]<<8)+data;
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd12,
+                7'd13,
+                7'd14,
+                7'd15:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=(buffer[3]<<8)+data;
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd16,
+                7'd17,
+                7'd18,
+                7'd19:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=(buffer[4]<<8)+data;
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd20,
+                7'd21,
+                7'd22,
+                7'd23:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=(buffer[5]<<8)+data;
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd24,
+                7'd25,
+                7'd26,
+                7'd27:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=(buffer[6]<<8)+data;
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd28,
+                7'd29,
+                7'd30,
+                7'd31:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=(buffer[7]<<8)+data;
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd32,
+                7'd33,
+                7'd34,
+                7'd35:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=(buffer[8]<<8)+data;
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd36,
+                7'd37,
+                7'd38,
+                7'd39:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=(buffer[9]<<8)+data;
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd40,
+                7'd41,
+                7'd42,
+                7'd43:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=(buffer[10]<<8)+data;
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd44,
+                7'd45,
+                7'd46,
+                7'd47:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=(buffer[11]<<8)+data;
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd48,
+                7'd49,
+                7'd50,
+                7'd51:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=(buffer[12]<<8)+data;
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd52,
+                7'd53,
+                7'd54,
+                7'd55:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=(buffer[13]<<8)+data;
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15];
+                    end
+                7'd56,
+                7'd57,
+                7'd58,
+                7'd59:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=(buffer[14]<<8)+data;
+                        buffer[15]<=buffer[15];
+                    end
+                7'd60,
+                7'd61,
+                7'd62,
+                7'd63:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=(buffer[15]<<8)+data;
+                    end
+                default:
+                    begin
+                        buffer[0]<=buffer[0];
+                        buffer[1]<=buffer[1];
+                        buffer[2]<=buffer[2];
+                        buffer[3]<=buffer[3];
+                        buffer[4]<=buffer[4];
+                        buffer[5]<=buffer[5];
+                        buffer[6]<=buffer[6];
+                        buffer[7]<=buffer[7];
+                        buffer[8]<=buffer[8];
+                        buffer[9]<=buffer[9];
+                        buffer[10]<=buffer[10];
+                        buffer[11]<=buffer[11];
+                        buffer[12]<=buffer[12];
+                        buffer[13]<=buffer[13];
+                        buffer[14]<=buffer[14];
+                        buffer[15]<=buffer[15]; 
+                    end
+                endcase                
+end
+
+always @ (posedge clk)
+begin
+    if(reset==1'b1 || write_enable==1'b0)
+        counter1<=7'd0;
+    else
+        counter1<=counter1+1'd1;
+end
+
+
+
 //register array
 always @ (posedge clk)
 begin
-    if(reset==1'b1 || counter == 7'd64)
+    if(reset==1'b1 || counter2 == 7'd64)
         begin
-            Wt<=32'b0;
             R1<=32'b0;
             R2<=32'b0;
             R3<=32'b0;
@@ -59,11 +487,6 @@ begin
     else
         if(inner_busy==1'b1)
             begin
-                if(write_enable==1'b1)
-                    Wt<=data;
-                else
-                    Wt<=logic_result;
-
                 R1<=Wt;
                 R2<=R1;
                 R3<=R2;
@@ -82,7 +505,6 @@ begin
             end
         else
             begin
-                Wt<=32'b0;
                 R1<=32'b0;
                 R2<=32'b0;
                 R3<=32'b0;
@@ -103,13 +525,45 @@ end
 
 always @ (posedge clk)
 begin
-    if(reset==1'b1 || counter==7'd64)
-        counter<=7'd0;
+    if(reset==1'b1 || counter2 ==7'd64)
+        Wt<=32'd0;
     else
         if(inner_busy==1'b1)
-            counter<=counter+1;
+            if(counter2>=7'd16)
+                Wt<=logic_result;
+            else
+                case (counter2)
+                    7'd0:Wt<=buffer[0];
+                    7'd1:Wt<=buffer[1];
+                    7'd2:Wt<=buffer[2];
+                    7'd3:Wt<=buffer[3];
+                    7'd4:Wt<=buffer[4];
+                    7'd5:Wt<=buffer[5];
+                    7'd6:Wt<=buffer[6];
+                    7'd7:Wt<=buffer[7];
+                    7'd8:Wt<=buffer[8];
+                    7'd9:Wt<=buffer[9];
+                    7'd10:Wt<=buffer[10];
+                    7'd11:Wt<=buffer[11];
+                    7'd12:Wt<=buffer[12];
+                    7'd13:Wt<=buffer[13];
+                    7'd14:Wt<=buffer[14];
+                    7'd15:Wt<=buffer[15];                     
+                    default: Wt<=32'b0;
+                endcase 
         else
-            counter<=7'd0;
+            Wt<=32'b0;
+end
+
+always @ (posedge clk)
+begin
+    if(reset==1'b1 || counter2==7'd64)
+        counter2<=7'd0;
+    else
+        if(inner_busy==1'b1)
+            counter2<=counter2+1;
+        else
+            counter2<=7'd0;
 end
 
 
