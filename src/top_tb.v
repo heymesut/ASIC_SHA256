@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
 
-`define SHA_QUANSHI0_RESULT 256'hbd03ac1428f0ea86f4b83a731ffc7967bb82866d8545322f888d2f6e857ffc18
+`define SHA_56GE0_RESULT 256'hbd03ac1428f0ea86f4b83a731ffc7967bb82866d8545322f888d2f6e857ffc18
+`define SHA_120GE0_RESULT 256'h09719c55365a950c92a06122b6ce2634e3ce9b6dbcde1827171941658c7eedab
 
 module top_tb;
 
@@ -19,24 +20,34 @@ module top_tb;
 
     // temp 
     reg [3:0] tmp;
-    reg [255:0] result;
+    reg [255:0] result1;
+    reg [255:0] result2;
+    reg checktime;
+    reg [7:0] count;
 
 
 //data:00000000000000000000000000000000000000000000000000000000(0 ASCII:8'h30)
 //加密后：bd03ac1428f0ea86f4b83a731ffc7967bb82866d8545322f888d2f6e857ffc18
-//需要加密的内容是56个0，长度为448位，刚好模512余448，所以被补全，补全到448+512位，补全第一位为1，其余位为0。
+//需要加密的内容是56个0，长度为448位，刚好模512余448，所以被补全，补全到448+512位，补全第一位为1，其余位为0
 //因为448位二进制表示为111000000，所以最后再加补全64位，64位开始为0，结尾为111000000
+
+//data:000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+//加密后：09719c55365a950c92a06122b6ce2634e3ce9b6dbcde1827171941658c7eedab
+//第二次加密内容56+64个0，长度为448+512位，模512余448，所以被补全到448+512+512位，补全第一位为1，其余位为0
+//因为448+512位二进制表示为1111000000，所以最后再加补全的64位，64位开始为0，结尾为1111000000
     initial 
     begin
         // Inputs
         // two blocks
-        result <=`SHA_QUANSHI0_RESULT;
+        result1 <=`SHA_56GE0_RESULT;
+        result2 <=`SHA_120GE0_RESULT;
         clk<=1'b1;
         reset<=1'b1;
         data<=8'b0;
         last_block<=1'b0;
         first_block<=1'b0;
         write_enable<=1'b0;
+        checktime<=1'b0;
 
 //=========================signal begins here=============================
         #8
@@ -44,11 +55,11 @@ module top_tb;
             reset<=1'b0;
             first_block<=1'b1;
         #8    
+        // first block begins
         // 1st cycle
             write_enable<=1'b1;
             data<=8'h30;
         #8
-        // the data input begins
         // 2nd-56th cycle
             first_block<=1'b0; 
         #440       
@@ -76,7 +87,51 @@ module top_tb;
         #8
         // 130th cycle
             write_enable<=1'b0; 
-            data<=8'b0;
+            data<=8'h00;
+        #520 // 1*65cycle, input when output
+        #8
+        #8
+            first_block<=1'b1;
+        #8
+        // second check
+        // 131st cycle(1st)
+            write_enable<=1'b1;
+            data<=8'h30;
+        #8
+        // 132nd-194th cycle(2nd-64th)
+            first_block<=1'b0;
+        #504
+        // 195th cycle(65th)
+            write_enable<=1'b0;
+        #8
+        // 196th-251st cycle(66th-121st)
+            write_enable<=1'b1;
+        #448
+        // 252nd cycle(122nd)
+            data<=8'h80;
+        #8
+        // 253th-259th cycle(123th-129th)
+            data<=8'h00;
+        #56
+        // 260th cycle(130th)
+            write_enable<=1'b0;
+        #8
+        // 261st cycle(131st)
+            last_block<=1'b1;
+        #8
+        // 262nd-322nd cycle(132nd-192nd)
+            last_block<=1'b0;
+            write_enable<=1'b1;
+        #488
+        // 323th cycle(193th)
+            data<=8'h03;
+        #8
+        // 324th cycle(194th)
+            data<=8'hc0;
+        #8
+        // 325th cycle(195th)
+            write_enable<=1'b0;
+            data<=8'h00;
     end
 
     always #4 clk=~clk;
@@ -84,31 +139,40 @@ module top_tb;
     always@(negedge clk)
     if(output_valid == 1'b0)
         begin
-        
+            count=8'b0;
         end
     else 
-        begin
-        tmp = result[64*4-1:63*4];
-        if(digest==tmp)
+        if(checktime == 1'b0)
             begin
-                $display("OK! Expected %x. Got %x.",tmp,digest);
+                tmp = result1[64*4-1:63*4];
+                if(digest==tmp)
+                    begin
+                        $display("Check1, OK! Expected %x. Got %x.",tmp,digest);
+                    end
+                else
+                    begin
+                        $display("Check1, ERROR! Expected %x. Got %x.",tmp,digest);
+                    end
+                result1 = result1 << 4;
+                count = count+1;
+                if(count == 8'b01000000)
+                    begin
+                        checktime = 1'b1;
+                    end
             end
-        else
+        else 
             begin
-                $display("ERROR! Expected %x. Got %x.",tmp,digest);
+                tmp = result2[64*4-1:63*4];
+                if(digest==tmp)
+                    begin
+                        $display("Check2, OK! Expected %x. Got %x.",tmp,digest);
+                    end
+                else
+                    begin
+                        $display("Check2, ERROR! Expected %x. Got %x.",tmp,digest);
+                    end
+                result2 = result2 << 4;
             end
-        result = result << 4;
-//        case(flag)
-//            3'b000: flag => 3'b001;
-//            3'b001: flag <= 3'b010;
-//            3'b010: flag <= 3'b011;
-//            3'b011: flag <= 3'b100;
-//            3'b100: flag <= 3'b101;
-//            3'b101: flag <= 3'b110;
-//            3'b110: flag <= 3'b111;
-//            3'b111: flag <= 3'b000;
-//        endcase
-        end
         
             
 
