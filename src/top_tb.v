@@ -90,7 +90,6 @@ module top_tb;
             data<=8'h00;
         #520 // 1*65cycle, input when output
         #8
-        #8
             first_block<=1'b1;
         #8
         // second check
