@@ -11,7 +11,7 @@
 //the last cycle before input
 //busy:when the module is working,set 1
 //digest:output digest(4 bits output per cycle)
-//output_enable: when output digest is valid,set 1
+//output_valid: when output digest is valid,set 1
 //////////////////////////////////////////////////
 
 
@@ -24,12 +24,14 @@ module top(
     input  wire                first_block,
     output wire                busy,
     output wire [3:0]          digest,
-    output wire                output_enable           
+    output wire                output_valid           
 );
 
 
 wire [31:0]           Wt;
 wire                  inner_busy;//enable hash_core and message_schedule
+wire                  first_block_core;//when the first cycle of the core dealing with the first block ,set 1
+wire                  output_enable;
 
 message_schedule our_message_schedule(
     .clk(clk),
@@ -46,9 +48,10 @@ hash_core our_hash_core(
     .reset(reset),
     .Wt(Wt),
     .inner_busy(inner_busy),
-    .first_block(first_block),
+    .first_block_core(first_block_core),
     .output_enable(output_enable),
-    .digest(digest)
+    .digest(digest),
+    .output_valid(output_valid)
 );
 
 controller our_controller(
@@ -58,7 +61,8 @@ controller our_controller(
     .last_block(last_block),
     .output_enable(output_enable),
     .busy(busy),
-    .inner_busy(inner_busy)
+    .inner_busy(inner_busy),
+    .first_block_core(first_block_core)
 );
 
 

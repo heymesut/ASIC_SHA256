@@ -10,6 +10,7 @@
 //output_enable: when output digest is valid,set 1
 //busy:when the module is working,set 1
 //inner_busy:set 1 to enable hash_core and message_schedule module
+//first_block_core : when the first cycle of the core dealing with the first block ,set 1
 ///////////////////////////////////////    
 
 
@@ -20,7 +21,8 @@ module controller(
     input  wire               last_block,
     output wire               output_enable,
     output wire               busy,
-    output wire               inner_busy
+    output wire               inner_busy,
+    output wire               first_block_core
 );
 
 
@@ -34,9 +36,10 @@ parameter s0=2'b00;//idle
 parameter s1=2'b01;//read_data
 parameter s2=2'b10; //iteration
 
-assign busy             =    (state==s0)? 0 : 1;
-assign output_enable    =    (counter2>=8'd132 && counter2<8'd196)? 1 : 0;
-assign inner_busy       =    (state==s2)? 1 : 0;
+assign busy              =    (state==s0)? 0 : 1;
+assign output_enable     =    (counter2>=8'd130 && counter2<8'd194)? 1 : 0;
+assign inner_busy        =    (state==s2)? 1 : 0;
+assign first_block_core  =    (counter1==7'd65)? 1 : 0;
 
 
 always @(posedge clk)
@@ -61,7 +64,7 @@ begin
         else
             next_state=s1;
       s2:
-        if(counter2==8'd131)
+        if(counter2==8'd129)
             next_state=s0;
         else
             next_state=s2; 
@@ -87,7 +90,7 @@ begin
     if(reset==1'b1)
         counter2<=8'd0;
     else
-        if(counter2==8'd196)
+        if(counter2==8'd194)
             counter2<=8'd0;
         else
             if(counter2!=8'd0 || last_block==1'b1)
@@ -95,5 +98,6 @@ begin
             else
                 counter2<=8'd0;
 end
+
 
 endmodule

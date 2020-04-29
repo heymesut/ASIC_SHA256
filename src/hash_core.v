@@ -78,9 +78,10 @@ module hash_core(
         input   wire           reset,
         input   wire [31:0]    Wt,
         input   wire           inner_busy,
-        input   wire           first_block,
+        input   wire           first_block_core,
         input   wire           output_enable,
-        output  reg [3:0]      digest
+        output  reg [3:0]      digest,
+        output  reg            output_valid
                 );
         
         wire [2:0] cmd;  //2:output_enable  1:inner_busy    0:first round
@@ -92,12 +93,6 @@ module hash_core(
         reg [5:0] read_counter;
 
         reg [31:0] Kt;
-
-        reg [1:0] mux_control;//1:mux1 , 0:mux2
-        wire [31:0] mux1,mux2;
-
-        reg [31:0] M,L;//pipeline
-        wire [31:0] M_w;
 
         wire [31:0] f1_EFG_32,f2_ABC_32,f3_A_32,f4_E_32,T1_32,T2_32;
         wire [31:0] next_E,next_A;
@@ -111,22 +106,16 @@ module hash_core(
         
         assign f4_E_32 = {E[5:0],E[31:6]} ^ {E[10:0],E[31:11]} ^ {E[24:0],E[31:25]};  //sigma1(e)
          
-        assign mux2 = mux_control[0] ? G[31:0] : H[31:0];
-        assign mux1 = mux_control[1] ? C[31:0] : D[31:0];
-
-        assign M_w = mux2 + Kt + Wt;
-        //assign T1_32 = H[31:0] + f4_E_32 + f1_EFG_32 + Kt + Wt;
+        assign T1_32 = H[31:0] + f4_E_32 + f1_EFG_32 + Kt + Wt;
         
-        assign T1_32 = f4_E_32 + f1_EFG_32 + M;
-
         assign T2_32 = f3_A_32 + f2_ABC_32;
 
-        assign next_E = mux1 + T1_32;
-        assign next_A = L + T2_32;
+        assign next_E = D[31:0] + T1_32;
+        assign next_A = T1_32 + T2_32;
         
         assign SHA256_result = {A,B,C,D,E,F,G,H};
 
-        assign cmd = {output_enable,inner_busy,first_block};
+        assign cmd = {output_enable,inner_busy,first_block_core};
         
         assign round_plus_1 = (cmd[1]==1) ? (round + 1) : round;
         
@@ -138,10 +127,7 @@ module hash_core(
                 if (reset == 1'b1 || (cmd[1] == 1'b0 && cmd[2] == 1'b0) )
                 begin
                         round <= 'd0;
-                        mux_control <= 2'b0;
-                        M <= 32'b0;
-                        L <= 32'b0;
-
+                        
                         A <= 32'b0;
                         B <= 32'b0;
                         C <= 32'b0;
@@ -181,10 +167,7 @@ module hash_core(
                                 H6 <= H6;
                                 H7 <= H7;
 
-                                round <= 'd0; 
-                                mux_control <= 2'b0;
-                                M <= 32'b0;
-                                L <= 32'b0;                                                                                              
+                                round <= 'd0;                                                                                               
                         end
                         else
                         begin
@@ -192,7 +175,7 @@ module hash_core(
                         
                                 'd0:
                                         begin            
-                                                if(cmd[0]==1'b1) // sha-256 first message
+                                                if(first_block_core==1'b1) // sha-256 first message
                                                 begin
                                                         A <= `SHA256_H0;
                                                         B <= `SHA256_H1;
@@ -213,10 +196,6 @@ module hash_core(
                                                         H7 <= `SHA256_H7;
 
                                                         round <=round_plus_1;
-                                                        mux_control[1:0] <= 2'b0;
-
-                                                        M <= 'b0;
-                                                        L <= 'b0;
                                                 end
                                                 else   // sha-256 internal message
                                                 begin
@@ -239,52 +218,11 @@ module hash_core(
                                                         H7 <= H;
 
                                                         round <=round_plus_1;
-                                                        mux_control[1:0] <= 2'b0;
-
-                                                        M <= 'b0;
-                                                        L <= 'b0;
                                                 end
                                         end
                                         
-                                'd1:
-                                        begin
-                                                // H0 <= H0;
-                                                // H1 <= H1;
-                                                // H2 <= H2;
-                                                // H3 <= H3;
-                                                // H4 <= H4;
-                                                // H5 <= H5;
-                                                // H6 <= H6;
-                                                // H7 <= H7;
-                                                L <= T1_32;
-                                                M <= M_w;
-                                                
-                                                round <= round_plus_1;
-                                                mux_control[1:0] <= 2'b01;
-                                        end
-                                'd2:
-                                        begin
-                                                
-                                                H <= G;
-                                                G <= F;
-                                                F <= E;
-                                                E <= next_E;
-
-                                                L <= T1_32;
-                                                M <= M_w;
-
-                                                // H0 <= H0;
-                                                // H1 <= H1;
-                                                // H2 <= H2;
-                                                // H3 <= H3;
-                                                // H4 <= H4;
-                                                // H5 <= H5;
-                                                // H6 <= H6;
-                                                // H7 <= H7;
-                                                
-                                                round <= round_plus_1;
-                                                mux_control[1:0] <= 2'b11;
-                                        end
+                                'd1,
+                                'd2,
                                 'd3,
                                 'd4,
                                 'd5,
@@ -345,9 +283,9 @@ module hash_core(
                                 'd60,
                                 'd61,
                                 'd62,
-                                'd63,
-                                'd64:
+                                'd63:
                                         begin
+                                                
                                                 H <= G;
                                                 G <= F;
                                                 F <= E;
@@ -357,90 +295,40 @@ module hash_core(
                                                 B <= A;
                                                 A <= next_A;
 
-
-                                                L <= T1_32;
-                                                M <= M_w;
-
-                                                // H0 <= H0;
-                                                // H1 <= H1;
-                                                // H2 <= H2;
-                                                // H3 <= H3;
-                                                // H4 <= H4;
-                                                // H5 <= H5;
-                                                // H6 <= H6;
-                                                // H7 <= H7;
+                                                H0 <= H0;
+                                                H1 <= H1;
+                                                H2 <= H2;
+                                                H3 <= H3;
+                                                H4 <= H4;
+                                                H5 <= H5;
+                                                H6 <= H6;
+                                                H7 <= H7;
                                                 
                                                 round <= round_plus_1;
                                         end
-                                'd65:
-                                        begin
-                                                H <= G + H7;
-                                                G <= F + H6;
-                                                F <= E + H5;
-                                                E <= next_E + H4;
-                                                D <= C;
-                                                C <= B;
-                                                B <= A;
-                                                A <= next_A;
-
-                                                L <= T1_32;
-                                                M <= M_w;
-
-                                                // H0 <= H0;
-                                                // H1 <= H1;
-                                                // H2 <= H2;
-                                                // H3 <= H3;
-                                                // H4 <= H4;
-                                                // H5 <= H5;
-                                                // H6 <= H6;
-                                                // H7 <= H7;
-                                                
-                                                round <= round_plus_1;
-                                        end
-                                'd66:
-                                        begin
-                                                D <= C + H3;
-                                                C <= B + H2;
-                                                B <= A + H1;
+                                'd64:
+                                        begin   //update hash_val 
                                                 A <= next_A + H0;
+                                                B <= A + H1;
+                                                C <= B + H2;
+                                                D <= C + H3;
+                                                E <= next_E + H4;
+                                                F <= E + H5;
+                                                G <= F + H6;
+                                                H <= G + H7;
 
-                                                L <= T1_32;
-                                                M <= M_w;
+                                                H0 <= H0;
+                                                H1 <= H1;
+                                                H2 <= H2;
+                                                H3 <= H3;
+                                                H4 <= H4;
+                                                H5 <= H5;
+                                                H6 <= H6;
+                                                H7 <= H7;
 
-                                                // H0 <= H0;
-                                                // H1 <= H1;
-                                                // H2 <= H2;
-                                                // H3 <= H3;
-                                                // H4 <= H4;
-                                                // H5 <= H5;
-                                                // H6 <= H6;
-                                                // H7 <= H7;
-                                                
-                                                round <= 0;
-                                        end   
-                                // 'd64:
-                                //         begin   //update hash_val 
-                                //                 A <= next_A + H0;
-                                //                 B <= A + H1;
-                                //                 C <= B + H2;
-                                //                 D <= C + H3;
-                                //                 E <= next_E + H4;
-                                //                 F <= E + H5;
-                                //                 G <= F + H6;
-                                //                 H <= G + H7;
-
-                                //                 H0 <= H0;
-                                //                 H1 <= H1;
-                                //                 H2 <= H2;
-                                //                 H3 <= H3;
-                                //                 H4 <= H4;
-                                //                 H5 <= H5;
-                                //                 H6 <= H6;
-                                //                 H7 <= H7;
-
-                                //                 round <= 'd0;
+                                                round <= 'd0;
                                         
-                                //         end
+                                        end
                                 default:
                                         begin
                                                 A <= 'b0;
@@ -462,10 +350,6 @@ module hash_core(
                                                 H7 <= 'b0;
 
                                                 round <= 'd0;
-                                                mux_control <= 2'b00;
-
-                                                M <= 'b0;
-                                                L <= 'b0;
                                         end
                                 endcase
                         end     
@@ -569,11 +453,13 @@ module hash_core(
                 begin
                         digest <= 'b0;
                         read_counter <= 'd63;
+                        output_valid <= 1'b0;
                 end
                 else
                 begin
                         if (cmd[2])
                         begin
+                                output_valid <= 1'b1;
                                 case (read_counter)
                                         'd63:    digest <= SHA256_result[64*4-1:63*4];
                                         'd62:    digest <= SHA256_result[63*4-1:62*4];
@@ -650,6 +536,7 @@ module hash_core(
                         begin
                                 digest <= 'b0;
                                 read_counter <= 'd63;
+                                output_valid <= 1'b0;
                         end
                 end
         end

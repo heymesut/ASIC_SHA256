@@ -1,4 +1,4 @@
-module sha256_chip(clk,reset,data,write_enable,last_block,first_block,busy,digest,output_enable);
+module sha256_chip(clk,reset,data,write_enable,last_block,first_block,busy,digest,output_valid);
 
 input wire  clk,reset;
 input wire  [31:0] data;
@@ -8,14 +8,14 @@ input wire  first_block;
 
 output wire  busy;
 output wire  [7:0] digest;
-output wire  output_enable;
+output wire  output_valid;
 
 wire net_clk,net_reset;
 wire [31:0] net_data;
 wire net_write_enable,net_last_block,net_first_block;
 wire net_busy;
 wire [7:0] net_digest;
-wire net_output_enable;
+wire net_output_valid;
 
 PIW
         PIW_clk(.PAD(clk),.C(net_clk)),
@@ -66,8 +66,8 @@ PO8W
         PO8W_digest5(.I(net_digest[5]),.PAD(digest[5])),
         PO8W_digest6(.I(net_digest[6]),.PAD(digest[6])),
         PO8W_digest7(.I(net_digest[7]),.PAD(digest[7])),
-        PO8W_output_enable(.I(net_output_enable),.PAD(output_enable));
+        PO8W_output_valid(.I(net_output_valid),.PAD(output_valid));
 
-top inst_top(.clk(net_clk),.reset(net_reset),.data(net_data),.write_enable(net_write_enable),.first_block(net_first_block),.last_block(net_last_block),.busy(net_busy),.digest(net_digest),.output_enable(net_output_enable));
+top inst_top(.clk(net_clk),.reset(net_reset),.data(net_data),.write_enable(net_write_enable),.first_block(net_first_block),.last_block(net_last_block),.busy(net_busy),.digest(net_digest),.output_valid(net_output_valid));
 
 endmodule
