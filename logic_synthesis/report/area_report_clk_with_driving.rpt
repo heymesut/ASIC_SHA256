@@ -3,7 +3,7 @@
 Report : area
 Design : sha256_chip
 Version: D-2010.03-SP5-3
-Date   : Thu Mar 21 17:55:37 2019
+Date   : Wed May  6 20:45:02 2020
 ****************************************
 
 Library(s) Used:
@@ -11,15 +11,15 @@ Library(s) Used:
     slow (File: /home/student/Desktop/Workspace/SMIC18/db/slow.db)
     SP018W_V1p5_max (File: /home/student/Desktop/Workspace/SMIC18/db/SP018W_V1p5_max.db)
 
-Number of ports:               47
-Number of nets:                94
-Number of cells:               48
+Number of ports:               19
+Number of nets:                38
+Number of cells:               20
 Number of references:           3
 
-Combinational area:       879610.100711
-Noncombinational area:    62077.277969
-Net Interconnect area:    883497.846313
+Combinational area:       452219.478334
+Noncombinational area:    89819.454315
+Net Interconnect area:    1131812.451904
 
-Total cell area:          941687.378680
-Total area:               1825185.224994
+Total cell area:          542038.932650
+Total area:               1673851.384554
 1

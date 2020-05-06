@@ -1,4 +1,4 @@
-`timescale 1ns / 1ns
+`timescale 1ns / 1ps
 
 `define SHA_56GE0_RESULT 256'hbd03ac1428f0ea86f4b83a731ffc7967bb82866d8545322f888d2f6e857ffc18
 `define SHA_120GE0_RESULT 256'h09719c55365a950c92a06122b6ce2634e3ce9b6dbcde1827171941658c7eedab

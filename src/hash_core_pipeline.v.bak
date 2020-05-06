@@ -417,7 +417,7 @@ module hash_core(
                                                 // H6 <= H6;
                                                 // H7 <= H7;
                                                 
-                                                round <= round_plus_1;
+                                                round <= 0;
                                         end   
                                 // 'd64:
                                 //         begin   //update hash_val 
