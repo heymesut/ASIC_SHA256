@@ -4,25 +4,9 @@ Report : constraint
         -all_violators
 Design : sha256_chip
 Version: D-2010.03-SP5-3
-Date   : Wed May  6 20:45:02 2020
+Date   : Thu May  7 18:29:10 2020
 ****************************************
 
-
-   min_delay/hold ('clk' group)
-
-                             Required        Actual
-   Endpoint                 Path Delay     Path Delay        Slack
-   -----------------------------------------------------------------
-   inst_top/our_message_schedule/R8_reg[0]/D
-                                4.64           4.59 f        -0.05  (VIOLATED)
-   inst_top/our_message_schedule/R6_reg[0]/D
-                                4.67           4.65 f        -0.02  (VIOLATED)
-   inst_top/our_message_schedule/R6_reg[1]/D
-                                4.67           4.65 f        -0.02  (VIOLATED)
-   inst_top/our_message_schedule/R7_reg[1]/D
-                                4.63           4.62 f        -0.01  (VIOLATED)
-   inst_top/our_message_schedule/R7_reg[0]/D
-                                4.63           4.63 f         0.00  (VIOLATED: increase signficant digits)
-
+This design has no violated constraints.
 
 1
