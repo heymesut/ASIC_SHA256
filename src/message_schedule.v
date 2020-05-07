@@ -466,7 +466,7 @@ end
 //register array
 always @ (posedge clk)
 begin
-    if(reset==1'b1 || counter2 == 7'd64)
+    if(reset==1'b1 || counter2 == 7'd64 || counter2 == 7'd65 || counter2 == 7'd66)
         begin
             R1<=32'b0;
             R2<=32'b0;
@@ -525,7 +525,7 @@ end
 
 always @ (posedge clk)
 begin
-    if(reset==1'b1 || counter2 ==7'd64)
+    if(reset==1'b1 || counter2 == 7'd64 || counter2 == 7'd65 || counter2 == 7'd66)
         Wt<=32'd0;
     else
         if(inner_busy==1'b1)
@@ -557,7 +557,7 @@ end
 
 always @ (posedge clk)
 begin
-    if(reset==1'b1 || counter2==7'd64)
+    if(reset==1'b1 || counter2==7'd66)
         counter2<=7'd0;
     else
         if(inner_busy==1'b1)

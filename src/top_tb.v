@@ -71,64 +71,64 @@ module top_tb;
         #56    
         // 65th cycle
             write_enable<=1'b0;
-        #8
-        // 66th cycle
+        #24
+        // 68th cycle
             last_block<=1'b1;  
             write_enable<=1'b1; 
         #8    
-        // 67th-127th cycle
+        // 69th-129th cycle
             last_block<=1'b0;
         #488       
-        // 128th cycle 
+        // 130th cycle 
             data<=8'h01;
         #8
-        // 129th cycle
+        // 131th cycle
             data<=8'hc0;
         #8
-        // 130th cycle
+        // 132th-134th cycle
             write_enable<=1'b0; 
             data<=8'h00;
-        #520 // 1*65cycle, input when output
-        #8
+        #24
+        #536 // 67cycle, then input when output
             first_block<=1'b1;
         #8
         // second check
-        // 131st cycle(1st)
+        // 1st cycle1
             write_enable<=1'b1;
             data<=8'h30;
         #8
-        // 132nd-194th cycle(2nd-64th)
+        // 2nd-64th cycle
             first_block<=1'b0;
         #504
-        // 195th cycle(65th)
+        // 65th - 67th cycle
             write_enable<=1'b0;
-        #8
-        // 196th-251st cycle(66th-121st)
+        #24
+        // 68th-123th cycle
             write_enable<=1'b1;
         #448
-        // 252nd cycle(122nd)
+        // 124th cycle
             data<=8'h80;
         #8
-        // 253th-259th cycle(123th-129th)
+        // 125th-131th cycle
             data<=8'h00;
         #56
-        // 260th cycle(130th)
+        // 132nd-134th cycle
             write_enable<=1'b0;
-        #8
-        // 261st cycle(131st)
+        #24
+        // 135th cycle
             last_block<=1'b1;
         #8
-        // 262nd-322nd cycle(132nd-192nd)
+        // 136th-196th cycle
             last_block<=1'b0;
             write_enable<=1'b1;
         #488
-        // 323th cycle(193th)
+        // 197th cycle
             data<=8'h03;
         #8
-        // 324th cycle(194th)
+        // 198th cycle
             data<=8'hc0;
         #8
-        // 325th cycle(195th)
+        // 199th - 201st cycle
             write_enable<=1'b0;
             data<=8'h00;
     end
