@@ -4,7 +4,7 @@ Report : constraint
         -all_violators
 Design : sha256_chip
 Version: D-2010.03-SP5-3
-Date   : Thu May  7 18:29:10 2020
+Date   : Thu May  7 19:00:23 2020
 ****************************************
 
 This design has no violated constraints.

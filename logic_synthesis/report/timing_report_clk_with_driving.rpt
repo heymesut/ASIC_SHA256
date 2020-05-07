@@ -6,7 +6,7 @@ Report : timing
         -max_paths 1
 Design : sha256_chip
 Version: D-2010.03-SP5-3
-Date   : Thu May  7 18:29:10 2020
+Date   : Thu May  7 19:00:23 2020
 ****************************************
 
  # A fanout number of 1000 was used for high fanout net computations.
@@ -14,9 +14,9 @@ Date   : Thu May  7 18:29:10 2020
 Operating Conditions: slow   Library: slow
 Wire Load Model Mode: segmented
 
-  Startpoint: write_enable
-              (input port clocked by clk)
-  Endpoint: inst_top/our_message_schedule/buffer_reg[4][1]
+  Startpoint: inst_top/our_hash_core/E_reg[1]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: inst_top/our_hash_core/E_reg[27]
             (rising edge-triggered flip-flop clocked by clk)
   Path Group: clk
   Path Type: max
@@ -28,34 +28,91 @@ Wire Load Model Mode: segmented
   Point                                                   Incr       Path
   --------------------------------------------------------------------------
   clock clk (rise edge)                                   0.00       0.00
-  clock network delay (ideal)                             4.30       4.30
-  input external delay                                    4.00       8.30 f
-  write_enable (in)                                       0.32       8.62 f
-  PIW_write_enable/C (PIW)                                0.81       9.43 f
-  inst_top/write_enable (top)                             0.00       9.43 f
-  inst_top/our_message_schedule/write_enable (message_schedule)
-                                                          0.00       9.43 f
-  inst_top/our_message_schedule/U899/Y (AND2X4)           0.23       9.66 f
-  inst_top/our_message_schedule/U152/Y (AND2X2)           0.28       9.94 f
-  inst_top/our_message_schedule/U541/Y (AOI31XL)          0.38      10.32 r
-  inst_top/our_message_schedule/U58/Y (OR2X4)             0.29      10.61 r
-  inst_top/our_message_schedule/U602/Y (INVX1)            0.44      11.05 f
-  inst_top/our_message_schedule/U1405/Y (AOI22XL)         0.47      11.52 r
-  inst_top/our_message_schedule/U1404/Y (INVX1)           0.15      11.67 f
-  inst_top/our_message_schedule/buffer_reg[4][1]/D (DFFHQXL)
-                                                          0.00      11.67 f
-  data arrival time                                                 11.67
+  clock network delay (ideal)                             4.00       4.00
+  inst_top/our_hash_core/E_reg[1]/CK (DFFX4)              0.00 #     4.00 r
+  inst_top/our_hash_core/E_reg[1]/Q (DFFX4)               0.34       4.34 r
+  inst_top/our_hash_core/U2739/Y (MXI2X4)                 0.20       4.54 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_121_2/B[1] (hash_core_DW01_add_43)
+                                                          0.00       4.54 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_121_2/U131/Y (OR2X4)
+                                                          0.29       4.84 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_121_2/U167/Y (INVX8)
+                                                          0.12       4.96 r
+  inst_top/our_hash_core/add_1_root_add_0_root_add_121_2/U315/Y (NOR2X4)
+                                                          0.11       5.07 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_121_2/U314/Y (OAI2BB1X4)
+                                                          0.13       5.20 r
+  inst_top/our_hash_core/add_1_root_add_0_root_add_121_2/U13/Y (NAND2X2)
+                                                          0.20       5.40 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_121_2/U172/Y (OAI21X4)
+                                                          0.24       5.64 r
+  inst_top/our_hash_core/add_1_root_add_0_root_add_121_2/U12/Y (NAND3X4)
+                                                          0.10       5.74 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_121_2/U310/Y (OAI2BB1X4)
+                                                          0.20       5.94 f
+  inst_top/our_hash_core/add_1_root_add_0_root_add_121_2/U309/Y (XOR2X4)
+                                                          0.38       6.32 r
+  inst_top/our_hash_core/add_1_root_add_0_root_add_121_2/SUM[11] (hash_core_DW01_add_43)
+                                                          0.00       6.32 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_121_2/B[11] (hash_core_DW01_add_38)
+                                                          0.00       6.32 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_121_2/U244/Y (OAI2BB1X4)
+                                                          0.23       6.55 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_121_2/U111/Y (INVX4)
+                                                          0.06       6.61 f
+  inst_top/our_hash_core/add_0_root_add_0_root_add_121_2/U110/Y (NAND2X4)
+                                                          0.19       6.80 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_121_2/U108/Y (AOI21X4)
+                                                          0.12       6.92 f
+  inst_top/our_hash_core/add_0_root_add_0_root_add_121_2/U354/Y (NAND2X4)
+                                                          0.12       7.04 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_121_2/U139/Y (XNOR2X4)
+                                                          0.38       7.42 r
+  inst_top/our_hash_core/add_0_root_add_0_root_add_121_2/SUM[13] (hash_core_DW01_add_38)
+                                                          0.00       7.42 r
+  inst_top/our_hash_core/add_125/B[13] (hash_core_DW01_add_26)
+                                                          0.00       7.42 r
+  inst_top/our_hash_core/add_125/U178/Y (AND2X4)          0.18       7.60 r
+  inst_top/our_hash_core/add_125/U241/Y (AOI2BB1X4)       0.20       7.80 r
+  inst_top/our_hash_core/add_125/U306/Y (AOI21X4)         0.12       7.92 f
+  inst_top/our_hash_core/add_125/U305/Y (OAI21X4)         0.14       8.06 r
+  inst_top/our_hash_core/add_125/U247/Y (NAND3BX4)        0.20       8.26 r
+  inst_top/our_hash_core/add_125/U20/Y (BUFX12)           0.16       8.42 r
+  inst_top/our_hash_core/add_125/U301/Y (AOI21X4)         0.14       8.56 f
+  inst_top/our_hash_core/add_125/U298/Y (OAI21X4)         0.18       8.74 r
+  inst_top/our_hash_core/add_125/U221/Y (XOR2X4)          0.30       9.05 f
+  inst_top/our_hash_core/add_125/SUM[19] (hash_core_DW01_add_26)
+                                                          0.00       9.05 f
+  inst_top/our_hash_core/add_381/A[19] (hash_core_DW01_add_49)
+                                                          0.00       9.05 f
+  inst_top/our_hash_core/add_381/U123/Y (NOR2X4)          0.24       9.29 r
+  inst_top/our_hash_core/add_381/U15/Y (BUFX12)           0.18       9.47 r
+  inst_top/our_hash_core/add_381/U248/Y (NOR2X4)          0.07       9.54 f
+  inst_top/our_hash_core/add_381/U254/Y (OAI21X4)         0.12       9.66 r
+  inst_top/our_hash_core/add_381/U184/Y (NAND2X4)         0.09       9.75 f
+  inst_top/our_hash_core/add_381/U342/Y (NOR2X4)          0.12       9.87 r
+  inst_top/our_hash_core/add_381/U278/Y (AND3X4)          0.24      10.11 r
+  inst_top/our_hash_core/add_381/U239/Y (INVX8)           0.11      10.21 f
+  inst_top/our_hash_core/add_381/U240/Y (NAND2X4)         0.13      10.35 r
+  inst_top/our_hash_core/add_381/U169/Y (NAND3X2)         0.11      10.46 f
+  inst_top/our_hash_core/add_381/U225/Y (OAI2BB1X4)       0.20      10.66 f
+  inst_top/our_hash_core/add_381/U4/Y (XOR2X4)            0.23      10.89 f
+  inst_top/our_hash_core/add_381/SUM[27] (hash_core_DW01_add_49)
+                                                          0.00      10.89 f
+  inst_top/our_hash_core/U447/Y (NAND2X4)                 0.10      10.99 r
+  inst_top/our_hash_core/U400/Y (NAND2X4)                 0.07      11.06 f
+  inst_top/our_hash_core/E_reg[27]/D (DFFXL)              0.00      11.06 f
+  data arrival time                                                 11.06
 
-  clock clk (rise edge)                                   8.00       8.00
-  clock network delay (ideal)                             4.30      12.30
-  clock uncertainty                                      -0.40      11.90
-  inst_top/our_message_schedule/buffer_reg[4][1]/CK (DFFHQXL)
-                                                          0.00      11.90 r
-  library setup time                                     -0.23      11.67
-  data required time                                                11.67
+  clock clk (rise edge)                                   7.50       7.50
+  clock network delay (ideal)                             4.00      11.50
+  clock uncertainty                                      -0.30      11.20
+  inst_top/our_hash_core/E_reg[27]/CK (DFFXL)             0.00      11.20 r
+  library setup time                                     -0.14      11.06
+  data required time                                                11.06
   --------------------------------------------------------------------------
-  data required time                                                11.67
-  data arrival time                                                -11.67
+  data required time                                                11.06
+  data arrival time                                                -11.06
   --------------------------------------------------------------------------
   slack (MET)                                                        0.00
 

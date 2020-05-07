@@ -6,19 +6,19 @@ reset_design
 
 #---------------- SET TIMING CONSTRAINTS ----------------
 # 2.1 Set clock
-create_clock -period 10 [get_ports clk]
-set_clock_uncertainty 0.5 [get_clocks clk]     
-set_clock_transition 0.2 [get_clocks clk]
+create_clock -period 7.5 [get_ports clk]
+set_clock_uncertainty 0.3 [get_clocks clk]     
+set_clock_transition 0.1 [get_clocks clk]
 
 ######################## YBR ######################
-set_clock_latency -source 4 [get_clocks clk]
-set_clock_latency 0.3 [get_clocks clk]
+set_clock_latency -source 3 [get_clocks clk]
+set_clock_latency 1 [get_clocks clk]
 ######################## YBR ######################
 
 # 2.2
-set_input_delay -max 5 -clock clk [remove_from_collection [all_inputs] [get_ports clk]]
+set_input_delay -max 3.2 -clock clk [remove_from_collection [all_inputs] [get_ports clk]]
 # 2.3
-set_output_delay -max 5 -clock clk [all_outputs]
+set_output_delay -max 3.2 -clock clk [all_outputs]
 
 #---------------- SET ENVIRONMENTAL ATTIBUTES ----------------
 # 3.1 Set interconnect parasitic RCs

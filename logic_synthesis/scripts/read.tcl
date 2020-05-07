@@ -21,9 +21,9 @@
 #analyze -format verilog ../rtl/idct/idct_chip.v
 #elaborate idct_chip
 
-analyze -format verilog ../rtl/sha256/controller.v
+analyze -format verilog ../rtl/sha256/controller_pipeline.v
 
-analyze -format verilog ../rtl/sha256/hash_core.v
+analyze -format verilog ../rtl/sha256/hash_core_pipeline.v
 analyze -format verilog ../rtl/sha256/message_schedule.v
 analyze -format verilog ../rtl/sha256/top.v
 analyze -format verilog ../rtl/sha256/sha256_chip.v
