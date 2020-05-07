@@ -1,0 +1,115 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dF:/myfile/sha256_sim
+vcontroller
+Z0 !s110 1588842725
+!i10b 1
+!s100 TL30VClZFKY3QgnM@GO0G1
+I50=Lm;CC=ESO?]K[GhcMi0
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+Z2 dF:/myfile/ASIC_SHA256/sha256_sim
+w1588840578
+8F:/myfile/ASIC_SHA256/src/controller_pipeline.v
+FF:/myfile/ASIC_SHA256/src/controller_pipeline.v
+L0 17
+Z3 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z4 !s108 1588842725.000000
+!s107 F:/myfile/ASIC_SHA256/src/controller_pipeline.v|
+!s90 -reportprogress|300|-work|work|-stats=none|F:/myfile/ASIC_SHA256/src/controller_pipeline.v|
+!i113 1
+Z5 o-work work
+Z6 tCvgOpt 0
+vhash_core
+R0
+!i10b 1
+!s100 a_ZEWM:?g]gDk3n8jb;9Z0
+I4KjK0`_aHC4WJ]La06D`g1
+R1
+R2
+w1588839599
+8F:/myfile/ASIC_SHA256/src/hash_core_pipeline.v
+FF:/myfile/ASIC_SHA256/src/hash_core_pipeline.v
+L0 76
+R3
+r1
+!s85 0
+31
+R4
+!s107 F:/myfile/ASIC_SHA256/src/hash_core_pipeline.v|
+!s90 -reportprogress|300|-work|work|-stats=none|F:/myfile/ASIC_SHA256/src/hash_core_pipeline.v|
+!i113 1
+R5
+R6
+vmessage_schedule
+R0
+!i10b 1
+!s100 5Jd<T][VTa9:Rg89P9je70
+Ih<?c2NQHTz=>Ih17X>QRf3
+R1
+R2
+w1588840850
+8F:/myfile/ASIC_SHA256/src/message_schedule.v
+FF:/myfile/ASIC_SHA256/src/message_schedule.v
+L0 14
+R3
+r1
+!s85 0
+31
+R4
+!s107 F:/myfile/ASIC_SHA256/src/message_schedule.v|
+!s90 -reportprogress|300|-work|work|-stats=none|F:/myfile/ASIC_SHA256/src/message_schedule.v|
+!i113 1
+R5
+R6
+vtop
+R0
+!i10b 1
+!s100 87Im>Y>4cjK<H6g0BM:T30
+I7KW9D^E>e_<LjHR[CY]hY3
+R1
+R2
+w1588127802
+8F:/myfile/ASIC_SHA256/src/top.v
+FF:/myfile/ASIC_SHA256/src/top.v
+L0 18
+R3
+r1
+!s85 0
+31
+R4
+!s107 F:/myfile/ASIC_SHA256/src/top.v|
+!s90 -reportprogress|300|-work|work|-stats=none|F:/myfile/ASIC_SHA256/src/top.v|
+!i113 1
+R5
+R6
+vtop_tb
+R0
+!i10b 1
+!s100 <OaD=9ziFN8K@hU?m>6ON3
+ITU5=[NAWa;RSUGZbdIXjF1
+R1
+R2
+w1588841722
+8F:/myfile/ASIC_SHA256/src/top_tb.v
+FF:/myfile/ASIC_SHA256/src/top_tb.v
+L0 6
+R3
+r1
+!s85 0
+31
+R4
+!s107 F:/myfile/ASIC_SHA256/src/top_tb.v|
+!s90 -reportprogress|300|-work|work|-stats=none|F:/myfile/ASIC_SHA256/src/top_tb.v|
+!i113 1
+R5
+R6
