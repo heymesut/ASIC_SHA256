@@ -1,0 +1,41 @@
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : sha256_chip
+Version: D-2010.03-SP5-3
+Date   : Fri May  8 02:59:55 2020
+****************************************
+
+
+Library(s) Used:
+
+    slow (File: /home/student/Desktop/Workspace/SMIC18/db/slow.db)
+    SP018W_V1p5_max (File: /home/student/Desktop/Workspace/SMIC18/db/SP018W_V1p5_max.db)
+
+
+Operating Conditions: slow   Library: slow
+Wire Load Model Mode: segmented
+
+Design        Wire Load Model            Library
+------------------------------------------------
+sha256_chip            smic18_wl10       slow
+
+
+Global Operating Voltage = 1.62 
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+  Cell Internal Power  = 693.5093 mW   (66%)
+  Net Switching Power  = 353.8520 mW   (34%)
+                         ---------
+Total Dynamic Power    =   1.0474  W  (100%)
+
+Cell Leakage Power     =  12.3009 uW
+
+1
